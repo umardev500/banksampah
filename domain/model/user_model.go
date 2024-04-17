@@ -17,7 +17,7 @@ type User struct {
 }
 
 type CreateUser struct {
-	Email    string `json:"email" validate:"required,min=7"`
+	Email    string `json:"email" validate:"required,email,min=7"`
 	Username string `json:"username" validate:"required,min=6"`
 	Password string `json:"password" validate:"required,min=8"`
 }

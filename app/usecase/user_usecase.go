@@ -2,8 +2,12 @@ package usecase
 
 import "github.com/umardev500/banksampah/domain"
 
-type userUc struct{}
+type userUc struct {
+	repo domain.UserRepository
+}
 
-func NewUserUsecase() domain.UserUsecase {
-	return &userUc{}
+func NewUserUsecase(repo domain.UserRepository) domain.UserUsecase {
+	return &userUc{
+		repo: repo,
+	}
 }

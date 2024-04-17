@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
@@ -8,11 +9,13 @@ import (
 
 type userH struct {
 	uc domain.UserUsecase
+	v  *validator.Validate
 }
 
-func NewUserHandler(uc domain.UserUsecase) domain.UserHandler {
+func NewUserHandler(uc domain.UserUsecase, v *validator.Validate) domain.UserHandler {
 	return &userH{
 		uc: uc,
+		v:  v,
 	}
 }
 

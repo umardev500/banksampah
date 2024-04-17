@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -24,7 +25,8 @@ func main() {
 	defer cancel()
 
 	db := config.NewMongo()
-	application := app.New(db)
+	v := validator.New()
+	application := app.New(db, v)
 	err := application.Run(ctx)
 	if err != nil {
 		log.Fatal().Msgf("error running app: %v", err)

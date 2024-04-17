@@ -11,6 +11,8 @@ import (
 )
 
 func NewMongo() *mongo.Database {
+	log.Info().Msgf("connecting to mongo... 🕰️")
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -23,11 +25,13 @@ func NewMongo() *mongo.Database {
 		log.Fatal().Msgf("error connecting to mongo: %v", err)
 	}
 
+	log.Info().Msgf("pinging mongo... 👋")
+
 	if err := client.Ping(ctx, nil); err != nil {
 		log.Fatal().Msgf("error pinging mongo: %v", err)
 	}
 
-	log.Info().Msg("connected to mongo ok!")
+	log.Info().Msg("connected to mongo ok! 🚀")
 
 	dbName := os.Getenv("MONGO_DATABASE")
 	return client.Database(dbName)

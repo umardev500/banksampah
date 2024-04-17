@@ -17,6 +17,7 @@ func New(app *fiber.App, mongoDB *mongo.Database, v *validator.Validate) *Api {
 	return &Api{
 		app:     app,
 		mongoDB: mongoDB,
+		v:       v,
 	}
 }
 

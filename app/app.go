@@ -24,7 +24,7 @@ func New(mongoDB *mongo.Database) *App {
 func (app *App) Run(ctx context.Context) error {
 	fiberApp := fiber.New()
 
-	routes.NewRouter(fiberApp).Register() // register routes
+	routes.NewRouter(fiberApp, app.mongoDB).Register() // register routes
 
 	ch := make(chan error, 1)
 	go func() {

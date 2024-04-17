@@ -3,19 +3,22 @@ package api
 import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/inject"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Api struct {
-	app *fiber.App
+	app     *fiber.App
+	mongoDB *mongo.Database
 }
 
-func New(app *fiber.App) *Api {
+func New(app *fiber.App, mongoDB *mongo.Database) *Api {
 	return &Api{
-		app,
+		app:     app,
+		mongoDB: mongoDB,
 	}
 }
 
-func (a *Api) Register() {
-	api := a.app.Group("/api")
-	inject.UserInject(api)
+func (api *Api) Register() {
+	apiRoute := api.app.Group("/api")
+	inject.UserInject(apiRoute, api.mongoDB)
 }

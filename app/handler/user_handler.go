@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
+	"github.com/umardev500/banksampah/util"
 )
 
 type userH struct {
@@ -22,9 +23,15 @@ func NewUserHandler(uc domain.UserUsecase, v *validator.Validate) domain.UserHan
 func (uh *userH) Create(c fiber.Ctx) error {
 	var payload model.CreateUser
 
+	// Bing body
 	if err := c.Bind().Body(&payload); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
 
-	return c.JSON(payload)
+	// Handle validation
+	if hndl, err := util.ValidateJson(c, uh.v, payload); err != nil {
+		return hndl
+	}
+
+	return c.JSON("success")
 }

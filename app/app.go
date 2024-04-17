@@ -8,12 +8,17 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/routes"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type App struct{}
+type App struct {
+	mongoDB *mongo.Database
+}
 
-func New() *App {
-	return &App{}
+func New(mongoDB *mongo.Database) *App {
+	return &App{
+		mongoDB,
+	}
 }
 
 func (app *App) Run(ctx context.Context) error {

@@ -3,17 +3,17 @@ package model
 import (
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/google/uuid"
 )
 
 type User struct {
-	ID        primitive.ObjectID `json:"id" bson:"_id"`
-	Email     string             `json:"email"`
-	Username  string             `json:"username"`
-	Password  string             `json:"password"`
-	CreatedAt time.Time          `json:"created_at"`
-	UpdatedAt *time.Time         `json:"updated_at,omitempty"`
-	DeletedAt *time.Time         `json:"deleted_at,omitempty"`
+	ID        uuid.UUID  `json:"id" db:"id"`
+	Email     string     `json:"email" db:"email"`
+	Username  string     `json:"username" db:"username"`
+	Password  string     `json:"password" db:"password"`
+	CreatedAt time.Time  `json:"created_at" db:"created_at"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty" db:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at,omitempty" db:"deleted_at"`
 }
 
 type CreateUser struct {

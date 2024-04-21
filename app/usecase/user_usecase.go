@@ -3,18 +3,15 @@ package usecase
 import (
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type userUc struct {
-	repo   domain.UserRepository
-	client *mongo.Client
+	repo domain.UserRepository
 }
 
-func NewUserUsecase(repo domain.UserRepository, client *mongo.Client) domain.UserUsecase {
+func NewUserUsecase(repo domain.UserRepository) domain.UserUsecase {
 	return &userUc{
-		repo:   repo,
-		client: client,
+		repo: repo,
 	}
 }
 

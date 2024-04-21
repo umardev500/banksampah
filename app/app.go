@@ -8,26 +8,23 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/rs/zerolog/log"
-	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/routes"
 )
 
 type App struct {
-	mongoConn *config.MongoConfig
-	v         *validator.Validate
+	v *validator.Validate
 }
 
-func New(mongoConn *config.MongoConfig, v *validator.Validate) *App {
+func New(v *validator.Validate) *App {
 	return &App{
-		mongoConn: mongoConn,
-		v:         v,
+		v: v,
 	}
 }
 
 func (app *App) Run(ctx context.Context) error {
 	fiberApp := fiber.New()
 
-	routes.NewRouter(fiberApp, app.mongoConn, app.v).Register() // register routes
+	routes.NewRouter(fiberApp, app.v).Register() // register routes
 
 	ch := make(chan error, 1)
 	go func() {

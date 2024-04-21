@@ -10,6 +10,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/app"
+	"github.com/umardev500/banksampah/database/migration"
 )
 
 func init() {
@@ -22,6 +23,9 @@ func init() {
 func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Kill, os.Interrupt)
 	defer cancel()
+
+	m := migration.NewMigrate()
+	m.Up()
 
 	v := validator.New()
 	application := app.New(v)

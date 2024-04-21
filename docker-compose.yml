@@ -1,16 +1,18 @@
 version: "3"
 
 services:
-  mongo:
-    image: mongo
-    container_name: mongodb
+  postgres:
+    image: postgres
+    container_name: postgres_container
     ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data:/data/db
+      - 5432:5432
     environment:
-      - MONGO_INITDB_DATABASE=banksampah
+      - POSTGRES_DB=banksampah
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
 
 volumes:
-  mongodb_data:
+  pg_data:
     driver: local

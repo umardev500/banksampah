@@ -10,8 +10,10 @@ import (
 )
 
 func UserInject(router fiber.Router, mongoDB *mongo.Database, v *validator.Validate) {
+	client := mongoDB.Client()
+
 	repo := repository.NewUserRepo()
-	uc := usecase.NewUserUsecase(repo)
+	uc := usecase.NewUserUsecase(repo, client)
 	handler := handler.NewUserHandler(uc, v)
 
 	user := router.Group("/user")

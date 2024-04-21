@@ -31,7 +31,7 @@ func (app *App) Run(ctx context.Context) error {
 		port := os.Getenv("PORT")
 		addr := ":" + port
 
-		log.Info().Msgf("Listening on %s 🔥", port)
+		log.Info().Msgf("🔥 Listening on %s", port)
 		ch <- fiberApp.Listen(addr, fiber.ListenConfig{
 			DisableStartupMessage: true,
 		})

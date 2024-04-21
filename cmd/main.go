@@ -24,9 +24,9 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Kill, os.Interrupt)
 	defer cancel()
 
-	db := config.NewMongo()
+	mongoConn := config.NewMongo()
 	v := validator.New()
-	application := app.New(db, v)
+	application := app.New(mongoConn, v)
 	err := application.Run(ctx)
 	if err != nil {
 		log.Fatal().Msgf("error running app: %v", err)

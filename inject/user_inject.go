@@ -6,11 +6,11 @@ import (
 	"github.com/umardev500/banksampah/app/handler"
 	"github.com/umardev500/banksampah/app/repository"
 	"github.com/umardev500/banksampah/app/usecase"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/umardev500/banksampah/config"
 )
 
-func UserInject(router fiber.Router, mongoDB *mongo.Database, v *validator.Validate) {
-	client := mongoDB.Client()
+func UserInject(router fiber.Router, mongoConn *config.MongoConfig, v *validator.Validate) {
+	client := mongoConn.Client
 
 	repo := repository.NewUserRepo()
 	uc := usecase.NewUserUsecase(repo, client)

@@ -10,7 +10,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func NewMongo() *mongo.Database {
+type MongoConfig struct {
+	Client *mongo.Client
+	DB     *mongo.Database
+}
+
+func NewMongo() *MongoConfig {
 	log.Info().Msgf("connecting to mongo... 🕰️")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -34,5 +39,9 @@ func NewMongo() *mongo.Database {
 	log.Info().Msg("connected to mongo ok! 🚀")
 
 	dbName := os.Getenv("MONGO_DATABASE")
-	return client.Database(dbName)
+
+	return &MongoConfig{
+		Client: client,
+		DB:     client.Database(dbName),
+	}
 }

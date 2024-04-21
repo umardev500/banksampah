@@ -6,7 +6,9 @@ require (
 	github.com/go-playground/validator/v10 v10.19.0
 	github.com/gofiber/fiber/v3 v3.0.0-beta.2
 	github.com/google/uuid v1.6.0
+	github.com/jmoiron/sqlx v1.3.5
 	github.com/joho/godotenv v1.5.1
+	github.com/lib/pq v1.2.0
 	github.com/rs/zerolog v1.32.0
 )
 

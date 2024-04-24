@@ -92,7 +92,6 @@ func (conf *PgxConfig) WithTransaction(ctx context.Context, fn func(ctx context.
 // Get connection type from context
 func (conf *PgxConfig) TrOrDB(ctx context.Context) PgxQuery {
 	if tx, ok := ctx.Value(constant.Tx).(PgxQuery); ok {
-		log.Debug().Msgf("💪 Connection type is transaction ")
 		return tx
 	}
 

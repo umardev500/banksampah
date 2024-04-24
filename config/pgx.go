@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -27,35 +28,45 @@ type PgxConfig struct {
 	Query PgxQuery
 }
 
+var (
+	pgInstance *PgxConfig
+	once       sync.Once
+)
+
 func NewPgx() *PgxConfig {
-	log.Info().Msg("🐘 Connecting to Postgres...")
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+	once.Do(func() {
 
-	conf := &PgxConfig{}
+		log.Info().Msg("🐘 Connecting to Postgres...")
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
 
-	host := os.Getenv("POSTGRES_HOST")
-	port := os.Getenv("POSTGRES_PORT")
-	user := os.Getenv("POSTGRES_USER")
-	password := os.Getenv("POSTGRES_PASSWORD")
-	dbname := os.Getenv("POSTGRES_DATABASE")
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+		conf := &PgxConfig{}
 
-	dbpool, err := pgxpool.New(ctx, dsn)
-	if err != nil {
-		log.Fatal().Msgf("error connecting to postgres: %v", err)
-	}
+		host := os.Getenv("POSTGRES_HOST")
+		port := os.Getenv("POSTGRES_PORT")
+		user := os.Getenv("POSTGRES_USER")
+		password := os.Getenv("POSTGRES_PASSWORD")
+		dbname := os.Getenv("POSTGRES_DATABASE")
+		dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
-	log.Info().Msg("🤝 Postgres ping....")
+		dbpool, err := pgxpool.New(ctx, dsn)
+		if err != nil {
+			log.Fatal().Msgf("error connecting to postgres: %v", err)
+		}
 
-	if err := dbpool.Ping(ctx); err != nil {
-		log.Fatal().Msgf("error pinging postgres: %v", err)
-	}
+		log.Info().Msg("🤝 Postgres ping....")
 
-	log.Info().Msg("👋 Postgres connected successfully!")
-	conf.Pool = dbpool
+		if err := dbpool.Ping(ctx); err != nil {
+			log.Fatal().Msgf("error pinging postgres: %v", err)
+		}
 
-	return conf
+		log.Info().Msg("👋 Postgres connected successfully!")
+		conf.Pool = dbpool
+
+		pgInstance = conf
+	})
+
+	return pgInstance
 }
 
 func (conf *PgxConfig) WithTransaction(ctx context.Context, fn func(ctx context.Context) error) error {

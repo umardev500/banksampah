@@ -82,6 +82,10 @@ func (conf *PgxConfig) WithTransaction(ctx context.Context, fn func(ctx context.
 		return err
 	}
 
+	if err := tx.Commit(ctx); err != nil {
+		return err
+	}
+
 	return nil
 }
 

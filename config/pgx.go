@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/constant"
+	"github.com/umardev500/banksampah/util"
 )
 
 type PgxQuery interface {
@@ -35,7 +36,7 @@ var (
 
 func NewPgx() *PgxConfig {
 	once.Do(func() {
-
+		logger := util.NewLogger()
 		log.Info().Msg("🐘 Connecting to Postgres...")
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
@@ -54,12 +55,14 @@ func NewPgx() *PgxConfig {
 			log.Fatal().Msgf("error connecting to postgres: %v", err)
 		}
 
+		logger.UplineClearPrev()
 		log.Info().Msg("🤝 Postgres ping....")
 
 		if err := dbpool.Ping(ctx); err != nil {
 			log.Fatal().Msgf("error pinging postgres: %v", err)
 		}
 
+		logger.UplineClearPrev()
 		log.Info().Msg("👋 Postgres connected successfully!")
 		conf.Pool = dbpool
 

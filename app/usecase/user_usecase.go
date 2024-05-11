@@ -19,5 +19,7 @@ func NewUserUsecase(repo domain.UserRepository) domain.UserUsecase {
 }
 
 func (uc *userUc) Create(ctx context.Context, payload model.CreateUser) util.Response {
+	payload.ID = util.GenerateUUID()
+
 	return util.MakeResponse(200, "Create user successfuly", nil)
 }

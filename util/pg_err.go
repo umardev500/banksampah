@@ -14,6 +14,7 @@ func GetPgError(errs error) (response Response, err error) {
 		code := fiber.StatusInternalServerError
 		msg := pgErr.Detail
 
+		// Selecting error code
 		switch errCode {
 		case string(constant.SqlStateDuplicate):
 			code = fiber.StatusConflict

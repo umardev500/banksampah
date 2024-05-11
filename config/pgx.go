@@ -25,8 +25,7 @@ type PgxQuery interface {
 }
 
 type PgxConfig struct {
-	Pool  *pgxpool.Pool
-	Query PgxQuery
+	pool *pgxpool.Pool
 }
 
 var (
@@ -64,7 +63,7 @@ func NewPgx() *PgxConfig {
 
 		logger.UplineClearPrev()
 		log.Info().Msg("👋 Postgres connected successfully!")
-		conf.Pool = dbpool
+		conf.pool = dbpool
 
 		pgInstance = conf
 	})
@@ -73,7 +72,7 @@ func NewPgx() *PgxConfig {
 }
 
 func (conf *PgxConfig) WithTransaction(ctx context.Context, fn func(ctx context.Context) error) error {
-	tx, err := conf.Pool.Begin(ctx)
+	tx, err := conf.pool.Begin(ctx)
 	if err != nil {
 		return err
 	}
@@ -98,5 +97,5 @@ func (conf *PgxConfig) TrOrDB(ctx context.Context) PgxQuery {
 		return tx
 	}
 
-	return conf.Pool
+	return conf.pool
 }

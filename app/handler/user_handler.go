@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"context"
+	"time"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/domain"
@@ -33,5 +36,10 @@ func (uh *userH) Create(c fiber.Ctx) error {
 		return hndl
 	}
 
-	return c.JSON("success")
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	response := uh.uc.Create(ctx, payload)
+
+	return c.Status(response.Code).JSON(response)
 }

@@ -1,8 +1,11 @@
 package usecase
 
 import (
+	"context"
+
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
+	"github.com/umardev500/banksampah/util"
 )
 
 type userUc struct {
@@ -15,6 +18,6 @@ func NewUserUsecase(repo domain.UserRepository) domain.UserUsecase {
 	}
 }
 
-func (uc *userUc) Create(payload model.CreateUser) error {
-	return nil
+func (uc *userUc) Create(ctx context.Context, payload model.CreateUser) util.Response {
+	return util.MakeResponse(200, "Create user successfuly", nil)
 }

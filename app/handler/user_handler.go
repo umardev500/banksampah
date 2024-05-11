@@ -23,7 +23,7 @@ func NewUserHandler(uc domain.UserUsecase, v *validator.Validate) domain.UserHan
 func (uh *userH) Create(c fiber.Ctx) error {
 	var payload model.CreateUser
 
-	// Bing body
+	// Bind body
 	if err := c.Bind().Body(&payload); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}

@@ -16,4 +16,6 @@ type UserUsecase interface {
 	Create(ctx context.Context, payload model.CreateUser) util.Response
 }
 
-type UserRepository interface{}
+type UserRepository interface {
+	Create(ctx context.Context, payload model.CreateUser) error
+}

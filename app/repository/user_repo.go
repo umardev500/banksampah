@@ -19,6 +19,10 @@ func NewUserRepo(pgxConfig *config.PgxConfig) domain.UserRepository {
 }
 
 func (u *userRepo) Create(ctx context.Context, payload model.CreateUser) error {
-
-	return nil
+	queries := u.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		INSERT INTO users (id, email, username, "password") values ($1, $2, $3, $4)
+	`
+	_, err := queries.Exec(ctx, sql, payload.ID, payload.Email, payload.Username, payload.Password)
+	return err
 }

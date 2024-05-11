@@ -24,6 +24,10 @@ func (uc *userUc) Create(ctx context.Context, payload model.CreateUser) util.Res
 
 	err := uc.repo.Create(ctx, payload)
 	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			return response
+		}
+
 		return util.MakeResponse(
 			payload.ID,
 			fiber.StatusInternalServerError,

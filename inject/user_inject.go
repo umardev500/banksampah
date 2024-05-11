@@ -6,11 +6,11 @@ import (
 	"github.com/umardev500/banksampah/app/handler"
 	"github.com/umardev500/banksampah/app/repository"
 	"github.com/umardev500/banksampah/app/usecase"
+	"github.com/umardev500/banksampah/config"
 )
 
-func UserInject(router fiber.Router, v *validator.Validate) {
-
-	repo := repository.NewUserRepo()
+func UserInject(router fiber.Router, v *validator.Validate, pgxConfig *config.PgxConfig) {
+	repo := repository.NewUserRepo(pgxConfig)
 	uc := usecase.NewUserUsecase(repo)
 	handler := handler.NewUserHandler(uc, v)
 

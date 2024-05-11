@@ -2,18 +2,23 @@ package repository
 
 import (
 	"context"
-	"errors"
 
+	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
 )
 
-type userRepo struct{}
+type userRepo struct {
+	pgxConfig *config.PgxConfig
+}
 
-func NewUserRepo() domain.UserRepository {
-	return &userRepo{}
+func NewUserRepo(pgxConfig *config.PgxConfig) domain.UserRepository {
+	return &userRepo{
+		pgxConfig: pgxConfig,
+	}
 }
 
 func (u *userRepo) Create(ctx context.Context, payload model.CreateUser) error {
-	return errors.New("h")
+
+	return nil
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/routes"
 )
 
@@ -23,8 +24,9 @@ func New(v *validator.Validate) *App {
 
 func (app *App) Run(ctx context.Context) error {
 	fiberApp := fiber.New()
+	pgxConfig := config.NewPgx()
 
-	routes.NewRouter(fiberApp, app.v).Register() // register routes
+	routes.NewRouter(fiberApp, app.v, pgxConfig).Register() // register routes
 
 	ch := make(chan error, 1)
 	go func() {

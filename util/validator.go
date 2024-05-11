@@ -1,7 +1,6 @@
 package util
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -41,7 +40,7 @@ func ValidateJson(c fiber.Ctx, v *validator.Validate, payload interface{}) (erro
 			Errors:  errs,
 		}
 
-		return c.JSON(resp), errors.New("hi")
+		return c.Status(fiber.StatusBadRequest).JSON(resp), err
 	}
 
 	return nil, nil

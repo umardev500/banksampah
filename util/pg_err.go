@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/umardev500/banksampah/constant"
+	"github.com/umardev500/banksampah/types"
 )
 
 func GetPgError(errs error) (response Response, err error) {
@@ -14,7 +15,7 @@ func GetPgError(errs error) (response Response, err error) {
 		code := fiber.StatusInternalServerError
 		msg := pgErr.Detail
 		var clientCode string
-		var details *map[string]interface{}
+		var details interface{}
 
 		// Selecting error code
 		switch errCode {
@@ -23,10 +24,10 @@ func GetPgError(errs error) (response Response, err error) {
 			code = fiber.StatusBadRequest
 			msg = "Duplicate entry detected. Please try again."
 			detailMsg, matches := RegexDuplicate(pgErr.Detail)
-			details = &map[string]interface{}{
-				"field": matches[1],
-				"value": matches[2],
-				"error": detailMsg,
+			details = &types.SqlDuplicateDetail{
+				Field: matches[1],
+				Value: matches[2],
+				Error: detailMsg,
 			}
 			clientCode = string(constant.ErrCodeNameDuplicate)
 		}

@@ -3,5 +3,6 @@ package constant
 type ErrCodeName string
 
 const (
-	ErrCodeNameDuplicate ErrCodeName = "DUPLICATE"
+	ErrCodeNameDuplicate  ErrCodeName = "DUPLICATE"
+	ErrCodeNameValidation ErrCodeName = "VALIDATION"
 )

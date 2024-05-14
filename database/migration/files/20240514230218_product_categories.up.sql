@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS product_categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    "name" VARCHAR(25) UNIQUE,
+    "point" DECIMAL(7, 2),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT NULL,
+    deleted_at TIMESTAMPTZ DEFAULT NULL
+);

@@ -27,6 +27,11 @@ func ValidateJson(c fiber.Ctx, v *validator.Validate, payload interface{}) (erro
 				field := strings.ToLower(validationErr.Field())
 				tag := validationErr.Tag()
 
+				switch {
+				case tag == "min" || tag == "max":
+					tag = fmt.Sprintf("%s=%s", tag, validationErr.Param())
+				}
+
 				var errMsg string = validationMapping(validationErr)
 				errs = append(errs, ValidationDetail{
 					Field: field,

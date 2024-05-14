@@ -20,7 +20,7 @@ func GetPgError(errs error) (response Response, err error) {
 		switch errCode {
 		case string(constant.SqlStateDuplicate):
 			// case for duplicate
-			code = fiber.StatusConflict
+			code = fiber.StatusBadRequest
 			msg = "Duplicate entry detected. Please try again."
 			detailMsg, matches := RegexDuplicate(pgErr.Detail)
 			details = &map[string]interface{}{

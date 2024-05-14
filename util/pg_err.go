@@ -13,18 +13,32 @@ func GetPgError(errs error) (response Response, err error) {
 		ticket := uuid.New()
 		code := fiber.StatusInternalServerError
 		msg := pgErr.Detail
+		var clientCode string
+		var details *map[string]interface{}
 
 		// Selecting error code
 		switch errCode {
 		case string(constant.SqlStateDuplicate):
+			// case for duplicate
 			code = fiber.StatusConflict
-			msg = "Conflict, data is already exist"
+			msg = "Duplicate entry detected. Please try again."
+			detailMsg, matches := RegexDuplicate(pgErr.Detail)
+			details = &map[string]interface{}{
+				"field": matches[1],
+				"value": matches[2],
+				"error": detailMsg,
+			}
+			clientCode = string(constant.ErrCodeNameDuplicate)
 		}
 
 		return Response{
 			Code:    code,
 			Ticket:  ticket,
 			Message: msg,
+			Error: &ResponseError{
+				Code:    constant.ErrCodeName(clientCode),
+				Details: details,
+			},
 		}, errs
 	}
 

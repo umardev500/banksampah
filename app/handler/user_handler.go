@@ -41,5 +41,5 @@ func (uh *userH) Create(c fiber.Ctx) error {
 
 	response := uh.uc.Create(ctx, payload)
 
-	return c.Status(response.Code).JSON(response)
+	return c.Status(response.StatusCode).JSON(response)
 }

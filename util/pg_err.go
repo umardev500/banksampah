@@ -32,9 +32,9 @@ func GetPgError(errs error) (response Response, err error) {
 		}
 
 		return Response{
-			Code:    code,
-			Ticket:  ticket,
-			Message: msg,
+			StatusCode: code,
+			Ticket:     ticket,
+			Message:    msg,
 			Error: &ResponseError{
 				Code:    constant.ErrCodeName(clientCode),
 				Details: details,

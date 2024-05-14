@@ -28,13 +28,18 @@ func (uc *userUc) Create(ctx context.Context, payload model.CreateUser) util.Res
 			return response
 		}
 
-		return util.MakeResponse(
-			payload.ID,
-			fiber.StatusInternalServerError,
-			fiber.ErrInternalServerError.Message,
-			nil,
-		)
+		return util.Response{
+			Ticket:     payload.ID,
+			StatusCode: fiber.StatusInternalServerError,
+			Message:    fiber.ErrInternalServerError.Message,
+		}
 	}
 
-	return util.MakeResponse(payload.ID, 200, "Create user successfuly", nil)
+	// return util.MakeResponse(payload.ID, 200, "Create user successfuly", nil, nil)
+	return util.Response{
+		Ticket:     payload.ID,
+		StatusCode: fiber.StatusOK,
+		Message:    "Create user successfuly",
+	}
+
 }

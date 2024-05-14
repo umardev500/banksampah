@@ -11,18 +11,19 @@ type ResponseError struct {
 }
 
 type Response struct {
-	Ticket  uuid.UUID      `json:"ticket,omitempty"`
-	Code    int            `json:"-"`
-	Message string         `json:"message,omitempty"`
-	Data    interface{}    `json:"data,omitempty"`
-	Error   *ResponseError `json:"error,omitempty"`
+	Ticket     uuid.UUID      `json:"ticket,omitempty"`
+	StatusCode int            `json:"-"`
+	Message    string         `json:"message,omitempty"`
+	Data       interface{}    `json:"data,omitempty"`
+	Error      *ResponseError `json:"error,omitempty"`
 }
 
-func MakeResponse(ticket uuid.UUID, code int, message string, data interface{}) Response {
+func MakeResponse(ticket uuid.UUID, code int, message string, data interface{}, err *ResponseError) Response {
 	return Response{
-		Ticket:  ticket,
-		Code:    code,
-		Message: message,
-		Data:    data,
+		Ticket:     ticket,
+		StatusCode: code,
+		Message:    message,
+		Data:       data,
+		Error:      err,
 	}
 }

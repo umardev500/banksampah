@@ -22,5 +22,11 @@
         "name": "Permission Management",
         "description": "Permission Management Module",
         "status": "active"
+    },
+    {
+        "id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "Feature Management",
+        "description": "Feature Management Module",
+        "status": "active"
     }
 ]

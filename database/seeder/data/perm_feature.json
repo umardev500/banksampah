@@ -1,0 +1,37 @@
+[
+    {
+        "id": "b6164340-62f2-4baf-a824-d73630864299",
+        "feature_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "Add",
+        "description": "Permission to add feature",
+        "status": "active"
+    },
+    {
+        "id": "b6164341-62f2-4baf-a824-d73630864298",
+        "feature_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "Delete",
+        "description": "Permission to delete feature",
+        "status": "active"
+    },
+    {
+        "id": "b6164342-62f2-4baf-a824-d73630864297",
+        "feature_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "View",
+        "description": "Permission to view feature list",
+        "status": "active"
+    },
+    {
+        "id": "b6164343-62f2-4baf-a824-d73630864296",
+        "feature_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "Edit",
+        "description": "Permission to edit feature",
+        "status": "active"
+    },
+    {
+        "id": "b6164344-62f2-4baf-a824-d73630864295",
+        "feature_id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
+        "name": "Status",
+        "description": "Permission to change feature status",
+        "status": "always_active"
+    }
+]

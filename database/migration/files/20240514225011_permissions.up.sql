@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS permissions (
     feature_id UUID NOT NULL,
     "name" VARCHAR(50) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
+    "status" VARCHAR(25) DEFAULT 'active' CHECK ("status" IN ('active', 'inactive', 'always_active')),
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
     deleted_at TIMESTAMPTZ DEFAULT NULL,

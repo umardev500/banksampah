@@ -51,6 +51,17 @@ func (s *Seeder) Register() {
 			return err
 		}
 
+		// User Role
+		err = s.UserRoleDown(ctx)
+		if err != nil {
+			return err
+		}
+
+		err = s.UserRoleSeeds(ctx)
+		if err != nil {
+			return err
+		}
+
 		return nil
 	})
 }

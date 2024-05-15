@@ -1,0 +1,30 @@
+[
+    {
+        "id": "e8663844-2975-449c-94ad-c17b14acbdb1",
+        "feature_id": "6ba7b812-9dad-11d1-80b4-00c04fd430c3",
+        "name": "Add",
+        "description": "Permission to add role",
+        "status": "active"
+    },
+    {
+        "id": "e8663845-2975-449c-94ad-c17b14acbdb2",
+        "feature_id": "6ba7b812-9dad-11d1-80b4-00c04fd430c3",
+        "name": "Delete",
+        "description": "Permission to delete role",
+        "status": "active"
+    },
+    {
+        "id": "e8663846-2975-449c-94ad-c17b14acbdb3",
+        "feature_id": "6ba7b812-9dad-11d1-80b4-00c04fd430c3",
+        "name": "View",
+        "description": "Permission to view role list",
+        "status": "active"
+    },
+    {
+        "id": "e8663847-2975-449c-94ad-c17b14acbdb4",
+        "feature_id": "6ba7b812-9dad-11d1-80b4-00c04fd430c3",
+        "name": "Edit",
+        "description": "Permission to edit role",
+        "status": "active"
+    }
+]

@@ -34,5 +34,11 @@
         "feature_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "name": "Access Control",
         "description": "Permission to manage access control for users"
+    },
+    {
+        "id": "6ba7b816-9dad-11d1-80b4-00c04fd430c7",
+        "feature_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "name": "Role Assignment",
+        "description": "Permission to assign roles to users"
     }
 ]

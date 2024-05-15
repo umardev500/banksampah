@@ -58,7 +58,7 @@ func (s *Seeder) UserRoleSeeds(ctx context.Context) error {
 		return err
 	}
 
-	time.Sleep(500 * time.Millisecond) // add delay
+	time.Sleep(150 * time.Millisecond) // add delay
 
 	logger.UplineClearPrev()
 
@@ -101,7 +101,7 @@ func (s *Seeder) UserRoleDown(ctx context.Context) error {
 		return err
 	}
 
-	time.Sleep(500 * time.Millisecond) // add delay
+	time.Sleep(150 * time.Millisecond) // add delay
 
 	logger.UplineClearPrev()
 

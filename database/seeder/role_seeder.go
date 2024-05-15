@@ -65,7 +65,7 @@ func (s *Seeder) RoleSeeds(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msgf("📦 Seeded %d roles", copyCount)
+	log.Info().Msgf("📦 Seeding roles... ✅ (%d rows)", copyCount)
 
 	return nil
 }
@@ -108,7 +108,7 @@ func (s *Seeder) RoleDown(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msg("📦 Roles dropped successfully!")
+	log.Info().Msg("📦 Dropping roles... ✅")
 
 	return nil
 }

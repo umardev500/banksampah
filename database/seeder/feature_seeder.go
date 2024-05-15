@@ -65,7 +65,7 @@ func (s *Seeder) FeatureSeeds(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msgf("📦 Seeded %d features", copyCount)
+	log.Info().Msgf("📦 Seeding features... ✅ (%d rows)", copyCount)
 
 	return nil
 }
@@ -108,7 +108,7 @@ func (s *Seeder) FeatureDown(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msg("📦 Features dropped successfully!")
+	log.Info().Msg("📦 Dropping features... ✅")
 
 	return nil
 }

@@ -64,7 +64,7 @@ func (s *Seeder) UserSeeds(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msgf("📦 Seeded %d users", copyCount)
+	log.Info().Msgf("📦 Seeding users... ✅ (%d rows)", copyCount)
 
 	return nil
 }
@@ -107,7 +107,7 @@ func (s *Seeder) UserDown(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msg("📦 Users dropped successfully")
+	log.Info().Msg("📦 Dropping user_roles... ✅")
 
 	return nil
 }

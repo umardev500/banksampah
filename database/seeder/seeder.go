@@ -19,6 +19,12 @@ func NewSeeder() *Seeder {
 func (s *Seeder) Register() {
 	s.Conn.WithTransaction(context.Background(), func(ctx context.Context) (err error) {
 		/* DOWN START */
+		// Permission
+		err = s.PermissionDown(ctx)
+		if err != nil {
+			return err
+		}
+
 		// feature
 		err = s.FeatureDown(ctx)
 		if err != nil {
@@ -64,6 +70,12 @@ func (s *Seeder) Register() {
 
 		// User Role
 		err = s.UserRoleSeeds(ctx)
+		if err != nil {
+			return err
+		}
+
+		// Permission
+		err = s.PermissionSeeds(ctx)
 		if err != nil {
 			return err
 		}

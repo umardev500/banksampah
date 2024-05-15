@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS role_permissions(
     updated_at TIMESTAMPTZ DEFAULT NULL,
     deleted_at TIMESTAMPTZ DEFAULT NULL,
     PRIMARY KEY (role_id, permission_id),   
-    FOREIGN KEY (role_id) REFERENCES user_roles(id),
+    FOREIGN KEY (role_id) REFERENCES roles(id),
     FOREIGN KEY (permission_id) REFERENCES permissions(id)
 );

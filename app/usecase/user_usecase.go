@@ -20,9 +20,19 @@ func NewUserUsecase(repo domain.UserRepository) domain.UserUsecase {
 }
 
 func (uc *userUc) Create(ctx context.Context, payload model.CreateUser) util.Response {
-	payload.ID = util.GenerateUUID()
+	var err error
 
-	err := uc.repo.Create(ctx, payload)
+	payload.ID = util.GenerateUUID()
+	payload.Password, err = util.GenerateBcryptHash(payload.Password)
+	if err != nil {
+		return util.Response{
+			Ticket:     payload.ID,
+			StatusCode: fiber.StatusInternalServerError,
+			Message:    err.Error(),
+		}
+	}
+
+	err = uc.repo.Create(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			return response

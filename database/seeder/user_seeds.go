@@ -68,3 +68,46 @@ func (s *Seeder) UserSeeds(ctx context.Context) error {
 
 	return nil
 }
+
+func (s *Seeder) UserDown(ctx context.Context) error {
+	q := s.Conn.TrOrDB(ctx)
+	logger := util.NewLogger()
+
+	log.Info().Msg("📦 Dropping users...")
+	filePath := "database/seeder/data/user_data.json"
+	f, err := os.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	var rows []CreateUserSeed
+	err = json.Unmarshal(f, &rows)
+	if err != nil {
+		return err
+	}
+
+	var idsToDelete []uuid.UUID
+	for _, val := range rows {
+		idsToDelete = append(idsToDelete, val.ID)
+	}
+
+	sql := "DELETE FROM users WHERE id = ANY($1)"
+
+	_, err = q.Exec(ctx, sql, idsToDelete)
+	if err != nil {
+		logger.Upline()
+		logger.FirstLine()
+		log.Error().Msg("📦 Dropping users... 🚧")
+		fmt.Println(err)
+
+		return err
+	}
+
+	time.Sleep(500 * time.Millisecond) // add delay
+
+	logger.UplineClearPrev()
+
+	log.Info().Msg("📦 Users dropped successfully")
+
+	return nil
+}

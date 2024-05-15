@@ -18,6 +18,11 @@ func NewSeeder() *Seeder {
 
 func (s *Seeder) Register() {
 	s.Conn.WithTransaction(context.Background(), func(ctx context.Context) (err error) {
+		err = s.RoleDown(ctx)
+		if err != nil {
+			return err
+		}
+
 		err = s.RoleSeeds(ctx)
 		if err != nil {
 			return err

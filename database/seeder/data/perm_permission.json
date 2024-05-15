@@ -1,0 +1,37 @@
+[
+    {
+        "id": "557f9cea-ac86-4e3f-831b-5ffa0243be26",
+        "feature_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
+        "name": "Add",
+        "description": "Permission to add permission",
+        "status": "active"
+    },
+    {
+        "id": "557f9ceb-ac86-4e3f-831b-5ffa0243be27",
+        "feature_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
+        "name": "Delete",
+        "description": "Permission to delete permission",
+        "status": "active"
+    },
+    {
+        "id": "557f9cec-ac86-4e3f-831b-5ffa0243be28",
+        "feature_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
+        "name": "View",
+        "description": "Permission to view permission list",
+        "status": "active"
+    },
+    {
+        "id": "557f9ced-ac86-4e3f-831b-5ffa0243be29",
+        "feature_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
+        "name": "Edit",
+        "description": "Permission to edit permission",
+        "status": "active"
+    },
+    {
+        "id": "557f9cee-ac86-4e3f-831b-5ffa0243be30",
+        "feature_id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
+        "name": "Status",
+        "description": "Permission to change permission status",
+        "status": "always_active"
+    }
+]

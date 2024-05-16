@@ -42,11 +42,11 @@ func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.
 	}
 
 	var pagination *types.Pagination
-	total := params.Pagination.Total
+	total := len(wasteTypes)
 
 	if total > 0 {
 		pagination = &params.Pagination
-		pagination.Total = len(wasteTypes)
+		pagination.Total = total
 		rowTotal := 8
 		pageTotal := math.Ceil(float64(rowTotal) / float64(pagination.Limit))
 		pagination.PageTotal = int(pageTotal)

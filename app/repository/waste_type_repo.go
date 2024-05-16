@@ -28,7 +28,7 @@ func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, id string, payload mo
 		{
 			Field:    "id",
 			Operator: "=",
-			Value:    "itemid9090",
+			Value:    id,
 		},
 	})
 	if args == nil {

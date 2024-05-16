@@ -15,3 +15,8 @@ type WasteType struct {
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
 }
+
+type FindWasteTypeResponse struct {
+	Total      int
+	WasteTypes []WasteType
+}

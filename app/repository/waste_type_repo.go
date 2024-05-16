@@ -27,12 +27,12 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 		SELECT * FROM waste_types
 	`
 
-	queryRaw := util.BuildQuery(sql, params)
+	queryRaw, args := util.BuildQuery(sql, params)
 	queryRaw = util.StringTrimAnNoExtraSpace(util.RemoveSqlComment(queryRaw))
 
 	fmt.Println(queryRaw)
 
-	rows, err := queries.Query(ctx, queryRaw)
+	rows, err := queries.Query(ctx, queryRaw, args...)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +49,7 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 			&wasteType.DeletedAt,
 		)
 		if err != nil {
+			rows.Close()
 			return nil, err
 		}
 		wasteTypes = append(wasteTypes, wasteType)

@@ -20,9 +20,12 @@ func NewQueryParams(page, limit int, filter []types.Filter, order types.Order) *
 	}
 }
 
-func BuildQuery(baseQuery string, params *types.QueryParam) string {
+func BuildQuery(baseQuery string, params *types.QueryParam) (string, []interface{}) {
 	var queryBuilder strings.Builder
 	queryBuilder.WriteString(baseQuery)
+
+	var args []interface{}
+	argIndex := 1
 
 	// Add filter
 	if len(params.Filter) > 0 {
@@ -33,7 +36,9 @@ func BuildQuery(baseQuery string, params *types.QueryParam) string {
 			}
 			queryBuilder.WriteString(filter.Field)
 			queryBuilder.WriteString(fmt.Sprintf(" %s ", filter.Operator))
-			queryBuilder.WriteString(fmt.Sprintf("'%s'", filter.Value))
+			queryBuilder.WriteString(fmt.Sprintf("$%d", argIndex))
+			args = append(args, filter.Value)
+			argIndex++
 		}
 	}
 
@@ -53,5 +58,5 @@ func BuildQuery(baseQuery string, params *types.QueryParam) string {
 		queryBuilder.WriteString(fmt.Sprintf("%d", params.Pagination.Offset))
 	}
 
-	return queryBuilder.String()
+	return queryBuilder.String(), args
 }

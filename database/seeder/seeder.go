@@ -46,6 +46,12 @@ func (s *Seeder) Register() {
 		if err != nil {
 			return err
 		}
+
+		// Waste Type
+		err = s.WasteTypeDown(ctx)
+		if err != nil {
+			return err
+		}
 		/* DOWN END */
 
 		/* UP START */
@@ -76,6 +82,12 @@ func (s *Seeder) Register() {
 
 		// Permission
 		err = s.PermissionSeeds(ctx)
+		if err != nil {
+			return err
+		}
+
+		// Waste Type
+		err = s.WasteTypeSeeds(ctx)
 		if err != nil {
 			return err
 		}

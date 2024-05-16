@@ -20,10 +20,13 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 	}
 }
 
-func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) ([]model.WasteType, error) {
+func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (*model.FindWasteTypeResponse, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		SELECT * FROM waste_types
+		WITH items_count AS (
+			SELECT count(*) as total FROM waste_types
+		)
+		SELECT wt.*, ic.total FROM waste_types wt, items_count ic
 	`
 
 	queryRaw, args := util.BuildQuery(sql, params)
@@ -34,6 +37,7 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 		return nil, err
 	}
 	var wasteTypes []model.WasteType
+	var total int
 	for rows.Next() {
 		wasteType := model.WasteType{}
 		err := rows.Scan(
@@ -44,6 +48,7 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 			&wasteType.CreatedAt,
 			&wasteType.UpdatedAt,
 			&wasteType.DeletedAt,
+			&total,
 		)
 		if err != nil {
 			rows.Close()
@@ -51,5 +56,9 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 		}
 		wasteTypes = append(wasteTypes, wasteType)
 	}
-	return wasteTypes, nil
+
+	return &model.FindWasteTypeResponse{
+		Total:      total,
+		WasteTypes: wasteTypes,
+	}, nil
 }

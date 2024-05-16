@@ -25,7 +25,7 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.Response {
 	ticket := uuid.New()
 
-	wasteTypes, err := uc.repo.Find(ctx, params)
+	response, err := uc.repo.Find(ctx, params)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))
@@ -42,13 +42,11 @@ func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.
 	}
 
 	var pagination *types.Pagination
-	total := len(wasteTypes)
 
-	if total > 0 {
+	if response.Total > 0 {
 		pagination = &params.Pagination
-		pagination.Total = total
-		rowTotal := 8
-		pageTotal := math.Ceil(float64(rowTotal) / float64(pagination.Limit))
+		pagination.Total = response.Total
+		pageTotal := math.Ceil(float64(response.Total) / float64(pagination.Limit))
 		pagination.PageTotal = int(pageTotal)
 	}
 
@@ -56,7 +54,7 @@ func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
 		Message:    types.WasteType.SuccessGetAll,
-		Data:       wasteTypes,
+		Data:       response.WasteTypes,
 		Pagination: pagination,
 	}
 }

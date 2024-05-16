@@ -24,7 +24,7 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 
 func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response {
 	ticket := uuid.New()
-	handler, err := util.ParseIDWithHandler(&id)
+	handler, err := util.ParseIDWithResponse(&id)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
 		handler.Ticket = ticket

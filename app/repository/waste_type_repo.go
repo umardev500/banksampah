@@ -2,10 +2,13 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
+	"github.com/umardev500/banksampah/types"
+	"github.com/umardev500/banksampah/util"
 )
 
 type wasteTypeRepo struct {
@@ -18,12 +21,18 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 	}
 }
 
-func (repo *wasteTypeRepo) Find(ctx context.Context) ([]model.WasteType, error) {
+func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) ([]model.WasteType, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		SELECT * FROM waste_types
 	`
-	rows, err := queries.Query(ctx, sql)
+
+	queryRaw := util.BuildQuery(sql, params)
+	queryRaw = util.StringTrimAnNoExtraSpace(util.RemoveSqlComment(queryRaw))
+
+	fmt.Println(queryRaw)
+
+	rows, err := queries.Query(ctx, queryRaw)
 	if err != nil {
 		return nil, err
 	}

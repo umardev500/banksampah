@@ -21,10 +21,10 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 	}
 }
 
-func (uc *wasteTypeUc) Find(ctx context.Context) util.Response {
+func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.Response {
 	ticket := uuid.New()
 
-	wasteTypes, err := uc.repo.Find(ctx)
+	wasteTypes, err := uc.repo.Find(ctx, params)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))

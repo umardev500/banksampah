@@ -8,8 +8,8 @@ type Pagination struct {
 }
 
 type Filter struct {
-	Field string      `json:"field"`
-	Value interface{} `json:"value"`
+	Field string `json:"field"`
+	Value string `json:"value"`
 }
 
 type Order struct {

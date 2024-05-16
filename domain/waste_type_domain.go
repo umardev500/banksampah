@@ -11,12 +11,15 @@ import (
 
 type WasteTypeHandler interface {
 	Find(c fiber.Ctx) error
+	DeleteByID(c fiber.Ctx) error
 }
 
 type WasteTypeUsecase interface {
 	Find(ctx context.Context, params *types.QueryParam) util.Response
+	DeleteByID(ctx context.Context, id string) util.Response
 }
 
 type WasteTypeRepository interface {
 	Find(ctx context.Context, params *types.QueryParam) (*model.FindWasteTypeResponse, error)
+	DeleteByID(ctx context.Context, id string) error
 }

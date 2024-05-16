@@ -22,6 +22,38 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 	}
 }
 
+func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response {
+	ticket := uuid.New()
+	handler, err := util.ParseIDWithHandler(&id)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.DeleteByID(ctx, id)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+
+		return util.Response{
+			Ticket:     ticket,
+			StatusCode: fiber.StatusInternalServerError,
+			Message:    fiber.ErrInternalServerError.Message,
+		}
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.WasteType.SuccessDelete,
+	}
+}
+
 func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.Response {
 	ticket := uuid.New()
 

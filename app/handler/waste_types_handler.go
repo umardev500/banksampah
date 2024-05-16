@@ -20,6 +20,13 @@ func NewWasteTypeHandler(uc domain.WasteTypeUsecase, v *validator.Validate) doma
 	}
 }
 
+func (w *wasteTypeHandler) DeleteByID(c fiber.Ctx) error {
+	id := c.Params("id")
+
+	resp := w.uc.DeleteByID(c.Context(), id)
+	return c.Status(resp.StatusCode).JSON(resp)
+}
+
 func (w *wasteTypeHandler) Find(c fiber.Ctx) error {
 	var page int = util.StrToInt(c.Query("page"), 1)
 	var limit int = util.StrToInt(c.Query("limit"), 10)

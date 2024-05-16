@@ -20,6 +20,15 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 	}
 }
 
+func (repo *wasteTypeRepo) DeleteByID(ctx context.Context, id string) error {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		DELETE FROM waste_types WHERE id=$1
+	`
+	_, err := queries.Exec(ctx, sql, id)
+	return err
+}
+
 func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (*model.FindWasteTypeResponse, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql

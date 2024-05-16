@@ -19,6 +19,25 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 		pgxConfig: pgxConfig,
 	}
 }
+func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, id string, payload model.WasteTypeCreateOrUpdateRequest) error {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		UPDATE waste_types SET
+	`
+	rawQuery, args := util.BuildUpdateQuery(sql, payload, []types.Filter{
+		{
+			Field:    "id",
+			Operator: "=",
+			Value:    "itemid9090",
+		},
+	})
+	if args == nil {
+		return nil
+	}
+
+	_, err := queries.Exec(ctx, rawQuery, args...)
+	return err
+}
 
 func (repo *wasteTypeRepo) DeleteByID(ctx context.Context, id string) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)

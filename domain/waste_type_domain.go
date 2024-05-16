@@ -12,6 +12,7 @@ import (
 type WasteTypeHandler interface {
 	Find(c fiber.Ctx) error
 	DeleteByID(c fiber.Ctx) error
+	UpdateByID(c fiber.Ctx) error
 }
 
 type WasteTypeUsecase interface {

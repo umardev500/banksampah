@@ -1,10 +1,11 @@
 package types
 
 type Pagination struct {
-	Page   int `json:"page"`
-	Limit  int `json:"limit"`
-	Offset int `json:"offset"`
-	Total  int `json:"total"`
+	Page      int `json:"page"`
+	Limit     int `json:"limit"`
+	Offset    int `json:"offset"`
+	Total     int `json:"total"`
+	PageTotal int `json:"page_total"`
 }
 
 type Filter struct {

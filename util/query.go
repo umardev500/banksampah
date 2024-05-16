@@ -29,7 +29,7 @@ func BuildQuery(baseQuery string, params *types.QueryParam) string {
 		queryBuilder.WriteString(" WHERE ")
 		for i, filter := range params.Filter {
 			if i > 0 {
-				queryBuilder.WriteString(" AND ")
+				queryBuilder.WriteString(fmt.Sprintf(" %s ", filter.LogicalOperator))
 			}
 			queryBuilder.WriteString(filter.Field)
 			queryBuilder.WriteString(fmt.Sprintf(" %s ", filter.Operator))

@@ -27,14 +27,7 @@ func (w *wasteTypeHandler) Find(c fiber.Ctx) error {
 	queryParams := util.NewQueryParams(
 		page,
 		limit,
-		[]types.Filter{
-
-			{
-				Field:    "point",
-				Operator: ">=",
-				Value:    "800",
-			},
-		},
+		[]types.Filter{},
 		types.Order{
 			Field: "created_at",
 			Dir:   "desc",

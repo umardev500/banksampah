@@ -8,9 +8,10 @@ type Pagination struct {
 }
 
 type Filter struct {
-	Field    string `json:"field"`
-	Operator string `json:"operator"`
-	Value    string `json:"value"`
+	Field           string `json:"field"`
+	Operator        string `json:"operator"`
+	Value           string `json:"value"`
+	LogicalOperator string `json:"logicalOperator"`
 }
 
 type Order struct {

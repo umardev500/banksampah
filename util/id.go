@@ -16,7 +16,7 @@ func NewUUIDPointer() *uuid.UUID {
 	return &uuid
 }
 
-func ParseIDWithHandler(id *string) (resp *Response, err error) {
+func ParseIDWithResponse(id *string) (resp *Response, err error) {
 	idUUID, err := uuid.Parse(*id)
 	if err != nil {
 		return &Response{

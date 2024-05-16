@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/domain"
+	"github.com/umardev500/banksampah/domain/model"
 	"github.com/umardev500/banksampah/types"
 	"github.com/umardev500/banksampah/util"
 )
@@ -19,6 +20,38 @@ type wasteTypeUc struct {
 func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecase {
 	return &wasteTypeUc{
 		repo: repo,
+	}
+}
+
+func (uc *wasteTypeUc) UpdateByID(ctx context.Context, id string, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
+	ticket := uuid.New()
+	handler, err := util.ParseIDWithResponse(&id)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.UpdateByID(ctx, id, payload)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+
+		return util.Response{
+			Ticket:     ticket,
+			StatusCode: fiber.StatusInternalServerError,
+			Message:    fiber.ErrInternalServerError.Message,
+		}
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.WasteType.SuccessUpdate,
 	}
 }
 

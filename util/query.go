@@ -32,8 +32,8 @@ func BuildQuery(baseQuery string, params *types.QueryParam) string {
 				queryBuilder.WriteString(" AND ")
 			}
 			queryBuilder.WriteString(filter.Field)
-			queryBuilder.WriteString(" = ")
-			queryBuilder.WriteString(filter.Value)
+			queryBuilder.WriteString(fmt.Sprintf(" %s ", filter.Operator))
+			queryBuilder.WriteString(fmt.Sprintf("'%s'", filter.Value))
 		}
 	}
 

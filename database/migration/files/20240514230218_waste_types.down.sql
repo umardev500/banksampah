@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS product_categories;
+DROP TABLE IF EXISTS waste_types;

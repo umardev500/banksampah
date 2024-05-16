@@ -18,5 +18,5 @@ type WasteTypeUsecase interface {
 }
 
 type WasteTypeRepository interface {
-	Find(ctx context.Context, params *types.QueryParam) ([]model.WasteType, error)
+	Find(ctx context.Context, params *types.QueryParam) (*model.FindWasteTypeResponse, error)
 }

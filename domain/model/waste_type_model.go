@@ -20,3 +20,10 @@ type FindWasteTypeResponse struct {
 	Total      int
 	WasteTypes []WasteType
 }
+
+type WasteTypeCreateOrUpdateRequest struct {
+	ID          uuid.UUID `json:"-"`
+	Name        string    `json:"name"`
+	Point       float64   `json:"point"`
+	Description string    `json:"description"`
+}

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
@@ -29,8 +28,6 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 
 	queryRaw, args := util.BuildQuery(sql, params)
 	queryRaw = util.StringTrimAnNoExtraSpace(util.RemoveSqlComment(queryRaw))
-
-	fmt.Println(queryRaw)
 
 	rows, err := queries.Query(ctx, queryRaw, args...)
 	if err != nil {

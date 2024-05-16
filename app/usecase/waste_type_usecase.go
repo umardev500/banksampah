@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/domain"
+	"github.com/umardev500/banksampah/types"
 	"github.com/umardev500/banksampah/util"
 )
 
@@ -26,10 +27,11 @@ func (uc *wasteTypeUc) Find(ctx context.Context) util.Response {
 	wasteTypes, err := uc.repo.Find(ctx)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, "failed to get all waste types"))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))
 
 		return util.Response{
 			Ticket:     ticket,
@@ -41,7 +43,7 @@ func (uc *wasteTypeUc) Find(ctx context.Context) util.Response {
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    "Get all waste types successfuly",
+		Message:    types.WasteType.SuccessGetAll,
 		Data:       wasteTypes,
 	}
 }

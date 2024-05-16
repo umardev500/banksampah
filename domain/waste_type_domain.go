@@ -17,7 +17,7 @@ type WasteTypeHandler interface {
 type WasteTypeUsecase interface {
 	Find(ctx context.Context, params *types.QueryParam) util.Response
 	DeleteByID(ctx context.Context, id string) util.Response
-	UpdateByID(ctx context.Context, id string) util.Response
+	UpdateByID(ctx context.Context, id string, pyload model.WasteTypeCreateOrUpdateRequest) util.Response
 }
 
 type WasteTypeRepository interface {

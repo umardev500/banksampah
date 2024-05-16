@@ -3,6 +3,9 @@ package util
 import (
 	"fmt"
 	"sync"
+
+	"github.com/google/uuid"
+	"github.com/umardev500/banksampah/constant"
 )
 
 type Logger struct{}
@@ -38,4 +41,8 @@ func (l *Logger) ClearPrev() {
 func (l *Logger) UplineClearPrev() {
 	l.Upline()
 	l.ClearPrev()
+}
+
+func LogParseError(ticket *uuid.UUID, err error, add string) string {
+	return fmt.Sprintf("Ticket: %s%v%s | Error: %s. %s%v%s", constant.ANSI_BLUE, ticket, constant.ANSI_RESET, add, constant.ANSI_DARKRED, err, constant.ANSI_RESET)
 }

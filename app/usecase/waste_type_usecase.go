@@ -2,10 +2,10 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/util"
 )
@@ -29,7 +29,7 @@ func (uc *wasteTypeUc) Find(ctx context.Context) util.Response {
 			return response
 		}
 
-		fmt.Println(err)
+		log.Error().Msgf(util.LogParseError(&ticket, err, "failed to get all waste types"))
 
 		return util.Response{
 			Ticket:     ticket,

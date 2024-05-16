@@ -31,8 +31,8 @@ func BuildUpdateQuery(baseQuery string, payload interface{}, filter []types.Filt
 	v := reflect.ValueOf(payload)
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Field(i)
-		fieldTag := v.Type().Field(i).Tag.Get("db")
-		if !field.IsZero() {
+		fieldTag, ok := v.Type().Field(i).Tag.Lookup("db")
+		if !field.IsZero() && ok {
 			if argIndex > 1 {
 				queryBuilder.WriteString(",")
 			}
@@ -43,7 +43,7 @@ func BuildUpdateQuery(baseQuery string, payload interface{}, filter []types.Filt
 		}
 	}
 
-	if argIndex == 1 {
+	if argIndex <= 1 {
 		return "", nil
 	}
 
@@ -62,7 +62,7 @@ func BuildUpdateQuery(baseQuery string, payload interface{}, filter []types.Filt
 		}
 	}
 
-	return queryBuilder.String(), args
+	return StringTrimAnNoExtraSpace(RemoveSqlComment(queryBuilder.String())), args
 }
 
 func BuildQuery(baseQuery string, params *types.QueryParam) (string, []interface{}) {

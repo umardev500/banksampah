@@ -21,11 +21,12 @@ func NewWasteTypeHandler(uc domain.WasteTypeUsecase, v *validator.Validate) doma
 }
 
 func (w *wasteTypeHandler) Find(c fiber.Ctx) error {
-	var page int = util.StrToInt(c.Query("page"), 10)
+	var page int = util.StrToInt(c.Query("page"), 1)
+	var limit int = util.StrToInt(c.Query("limit"), 10)
 
 	queryParams := util.NewQueryParams(
 		page,
-		4,
+		limit,
 		[]types.Filter{
 
 			{

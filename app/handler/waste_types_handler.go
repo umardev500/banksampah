@@ -4,6 +4,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/domain"
+	"github.com/umardev500/banksampah/domain/model"
 	"github.com/umardev500/banksampah/types"
 	"github.com/umardev500/banksampah/util"
 )
@@ -18,6 +19,19 @@ func NewWasteTypeHandler(uc domain.WasteTypeUsecase, v *validator.Validate) doma
 		uc: uc,
 		v:  v,
 	}
+}
+
+func (w *wasteTypeHandler) UpdateByID(c fiber.Ctx) error {
+	id := c.Params("id")
+	var payload model.WasteTypeCreateOrUpdateRequest
+
+	if err := c.Bind().Body(&payload); err != nil {
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	}
+
+	payload.ID = id
+	resp := w.uc.UpdateByID(c.Context(), payload)
+	return c.Status(resp.StatusCode).JSON(resp)
 }
 
 func (w *wasteTypeHandler) DeleteByID(c fiber.Ctx) error {

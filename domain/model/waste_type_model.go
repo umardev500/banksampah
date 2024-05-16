@@ -22,8 +22,8 @@ type FindWasteTypeResponse struct {
 }
 
 type WasteTypeCreateOrUpdateRequest struct {
-	ID          uuid.UUID `json:"-"`
-	Name        string    `json:"name" db:"name"`
-	Point       float64   `json:"point" db:"point"`
-	Description string    `json:"description" db:"description"`
+	ID          string  `json:"-"`
+	Name        string  `json:"name" db:"name"`
+	Point       float64 `json:"point" db:"point"`
+	Description string  `json:"description" db:"description"`
 }

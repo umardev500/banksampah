@@ -41,6 +41,12 @@ func (s *Seeder) Register() {
 			return err
 		}
 
+		// Waste Deposit
+		err = s.WasteDepositDown(ctx)
+		if err != nil {
+			return err
+		}
+
 		// User
 		err = s.UserDown(ctx)
 		if err != nil {
@@ -88,6 +94,12 @@ func (s *Seeder) Register() {
 
 		// Waste Type
 		err = s.WasteTypeSeeds(ctx)
+		if err != nil {
+			return err
+		}
+
+		// Waste Deposit
+		err = s.WasteDepositSeeds(ctx)
 		if err != nil {
 			return err
 		}

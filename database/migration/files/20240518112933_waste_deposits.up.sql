@@ -7,8 +7,10 @@ CREATE TABLE IF NOT EXISTS waste_deposits (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
     deleted_at TIMESTAMPTZ DEFAULT NULL,
+    created_by UUID NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (created_by) REFERENCES users (id),
     FOREIGN KEY (waste_type_id) REFERENCES waste_types (id)
 );

@@ -3,5 +3,10 @@
         "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "user_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "role_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1"
+    },
+    {
+        "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c2",
+        "user_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c2",
+        "role_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2"
     }
 ]

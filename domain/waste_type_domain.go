@@ -22,6 +22,7 @@ type WasteTypeUsecase interface {
 }
 
 type WasteTypeRepository interface {
+	Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error
 	Find(ctx context.Context, params *types.QueryParam) (*model.FindWasteTypeResponse, error)
 	DeleteByID(ctx context.Context, id string) error
 	UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error

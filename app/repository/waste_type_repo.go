@@ -19,6 +19,18 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 		pgxConfig: pgxConfig,
 	}
 }
+
+func (repo wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		INSERT INTO waste_types (id, "name", "point", "description") VALUES ($1, $2, $3, $4);
+	`
+
+	_, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
+
+	return err
+}
+
 func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql

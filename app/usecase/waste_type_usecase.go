@@ -30,11 +30,11 @@ func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreate
 	result, err := uc.repo.Create(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 
 		return util.InternalErrorResponse(ticket)
 	}
@@ -42,7 +42,7 @@ func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreate
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    types.WasteType.SuccessCreate,
+		Message:    types.Waste.SuccessCreate,
 		Data:       result,
 	}
 }
@@ -51,7 +51,7 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCr
 	ticket := uuid.New()
 	handler, err := util.ParseIDWithResponse(&payload.ID)
 	if err != nil {
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 		handler.Ticket = ticket
 		return *handler
 	}
@@ -59,11 +59,11 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCr
 	err = uc.repo.UpdateByID(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 
 		return util.InternalErrorResponse(ticket)
 	}
@@ -71,7 +71,7 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCr
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    types.WasteType.SuccessUpdate,
+		Message:    types.Waste.SuccessUpdate,
 	}
 }
 
@@ -79,7 +79,7 @@ func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response 
 	ticket := uuid.New()
 	handler, err := util.ParseIDWithResponse(&id)
 	if err != nil {
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 		handler.Ticket = ticket
 		return *handler
 	}
@@ -87,11 +87,11 @@ func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response 
 	err = uc.repo.DeleteByID(ctx, id)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 
 		return util.Response{
 			Ticket:     ticket,
@@ -103,7 +103,7 @@ func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response 
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    types.WasteType.SuccessDelete,
+		Message:    types.Waste.SuccessDelete,
 	}
 }
 
@@ -113,11 +113,11 @@ func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.
 	response, err := uc.repo.Find(ctx, params)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedGetAll))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedGetAll))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedGetAll))
 
 		return util.Response{
 			Ticket:     ticket,
@@ -138,7 +138,7 @@ func (uc *wasteTypeUc) Find(ctx context.Context, params *types.QueryParam) util.
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    types.WasteType.SuccessGetAll,
+		Message:    types.Waste.SuccessGetAll,
 		Data:       response.WasteTypes,
 		Pagination: pagination,
 	}

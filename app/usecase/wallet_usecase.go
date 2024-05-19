@@ -26,7 +26,7 @@ func (uc *walletUsecase) DeleteByID(ctx context.Context, id string) util.Respons
 	ticket := uuid.New()
 	handler, err := util.ParseIDWithResponse(&id)
 	if err != nil {
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 		handler.Ticket = ticket
 		return *handler
 	}

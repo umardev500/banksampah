@@ -21,7 +21,7 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 func (repo *walletRepo) DeleteByID(ctx context.Context, id string) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		DELETE FROM wallets WHERE id=$1
+		DELETE FROM wallets WHERE id=$1 AND "type" != 'master'
 	`
 	_, err := queries.Exec(ctx, sql, id)
 	return err

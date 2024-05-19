@@ -2,7 +2,7 @@ package types
 
 import "fmt"
 
-var WasteType = struct {
+var Waste = struct {
 	FailedGetAll  string
 	SuccessGetAll string
 	FailedDelete  string

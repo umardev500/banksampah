@@ -25,7 +25,7 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 
 func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
-	payload.ID = ticket.String()
+	payload.ID = uuid.New().String()
 
 	err := uc.repo.Create(ctx, payload)
 	if err != nil {

@@ -24,7 +24,7 @@ func NewWalletUsecase(repo domain.WalletRepository) domain.WalletUsecase {
 
 func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
-	payload.ID = ticket.String()
+	payload.ID = uuid.New().String()
 
 	err := uc.repo.Create(ctx, payload)
 	if err != nil {

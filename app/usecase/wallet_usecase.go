@@ -31,8 +31,7 @@ func (uc *walletUsecase) DeleteByID(ctx context.Context, id string) util.Respons
 		return *handler
 	}
 
-	userID := types.DummyUserID // replace with actual user id
-	err = uc.repo.DeleteByID(ctx, id, userID)
+	err = uc.repo.DeleteByID(ctx, id)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedDelete))

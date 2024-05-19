@@ -16,6 +16,7 @@ type WalletCreateSeed struct {
 	ID          uuid.UUID `json:"id"`
 	UserID      uuid.UUID `json:"user_id"`
 	Name        string    `json:"name"`
+	Balance     float64   `json:"balance"`
 	Description string    `json:"description"`
 	Type        string    `json:"type"`
 }
@@ -42,12 +43,13 @@ func (s *Seeder) WalletSeeds(ctx context.Context) error {
 	copyCount, err := q.CopyFrom(
 		ctx,
 		pgx.Identifier{"wallets"},
-		[]string{"id", "user_id", "name", "description", "type"},
+		[]string{"id", "user_id", "name", "balance", "description", "type"},
 		pgx.CopyFromSlice(len(rows), func(i int) ([]interface{}, error) {
 			return []interface{}{
 				rows[i].ID,
 				rows[i].UserID,
 				rows[i].Name,
+				rows[i].Balance,
 				rows[i].Description,
 				rows[i].Type,
 			}, nil

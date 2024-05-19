@@ -39,17 +39,26 @@ func (repo *walletRepo) FindByID(ctx context.Context, id string) (model.Wallet, 
 	return result, err
 }
 
-func (repo *walletRepo) DeleteByID(ctx context.Context, id, userID string) error {
+func (repo *walletRepo) DeleteByID(ctx context.Context, id string) error {
 	sql := `--sql
 		DELETE FROM wallets WHERE id=$1 AND "type" != 'master'
 	`
+
+	// Find wallet by id to get wallet info
+	wallet, err := repo.FindByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	userID := wallet.UserD
+	prevBalance := wallet.Balance
 
 	restoreBalanceToMaster := `--sql
 		UPDATE wallets SET balance = balance + $1 WHERE "type" = 'master' AND user_id = $2
 	`
 
 	// Transaction
-	err := repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+	err = repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
 		queries := repo.pgxConfig.TrOrDB(ctx)
 		result, err := queries.Exec(ctx, sql, id)
 		if err != nil {
@@ -60,7 +69,7 @@ func (repo *walletRepo) DeleteByID(ctx context.Context, id, userID string) error
 
 		// Update balance to master
 		if rowsAffected > 0 {
-			_, err = queries.Exec(ctx, restoreBalanceToMaster, rowsAffected, userID)
+			_, err = queries.Exec(ctx, restoreBalanceToMaster, prevBalance, userID)
 			if err != nil {
 				return err
 			}

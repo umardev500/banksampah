@@ -6,5 +6,13 @@
         "balance": 1000,
         "description": "My first wallet for testing purposes",
         "type": "master"
+    },
+    {
+        "id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2",
+        "user_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2",
+        "name": "Wallet 2",
+        "balance": 2000,
+        "description": "My second wallet for testing purposes",
+        "type": "extension"
     }
 ]

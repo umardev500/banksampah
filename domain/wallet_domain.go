@@ -25,4 +25,5 @@ type WalletRepository interface {
 	DeleteByID(ctx context.Context, id string) error
 	FindByID(ctx context.Context, id string) (model.Wallet, error)
 	MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) ([]model.Wallet, error)
+	Update(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (*model.Wallet, error)
 }

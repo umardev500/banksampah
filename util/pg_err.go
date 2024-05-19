@@ -1,8 +1,6 @@
 package util
 
 import (
-	"fmt"
-
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -40,7 +38,7 @@ func GetPgError(errs error) (response Response, err error) {
 				// Todo
 				Field: matches[1],
 				Value: matches[2],
-				Error: fmt.Sprintf("%s is not exists.", MappingKey(matches[1])),
+				Error: "Constraint is not exists.",
 			}
 			clientCode = string(constant.ErrCodeNameConstraint)
 		}

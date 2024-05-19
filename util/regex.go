@@ -12,9 +12,8 @@ func RegexKeyValue(src, pattern string) (msg string, matches []string) {
 	matches = re.FindStringSubmatch(src)
 
 	if len(matches) > 2 {
-		field := matches[1]
 		value := matches[2]
-		detailedMessage := fmt.Sprintf("%s %s already exists.", field, value)
+		detailedMessage := fmt.Sprintf("%s already exists.", value)
 		return detailedMessage, matches
 	}
 

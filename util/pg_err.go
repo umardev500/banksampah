@@ -23,7 +23,7 @@ func GetPgError(errs error) (response Response, err error) {
 			// case for duplicate
 			code = fiber.StatusBadRequest
 			msg = "Duplicate entry detected. Please try again."
-			detailMsg, matches := RegexKeyValue(pgErr.Detail, string(constant.SqlErrPatternDuplicate))
+			detailMsg, matches := RegexKeyValueExist(pgErr.Detail, string(constant.SqlErrPatternDuplicate), true)
 			details = &types.SqlErrDetail{
 				Field: matches[1],
 				Value: matches[2],
@@ -33,12 +33,12 @@ func GetPgError(errs error) (response Response, err error) {
 		case string(constant.SqlConstraint):
 			code = fiber.StatusBadRequest
 			msg = "Constraint error detected."
-			_, matches := RegexKeyValue(pgErr.Detail, string(constant.SqlErrConstraintPattern))
+			detailMsg, matches := RegexKeyValueExist(pgErr.Detail, string(constant.SqlErrConstraintPattern), false)
 			details = &types.SqlErrDetail{
 				// Todo
 				Field: matches[1],
 				Value: matches[2],
-				Error: "Constraint is not exists.",
+				Error: detailMsg,
 			}
 			clientCode = string(constant.ErrCodeNameConstraint)
 		}

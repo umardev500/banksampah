@@ -16,6 +16,7 @@ func WasteTypeInject(router fiber.Router, v *validator.Validate, pgxConfig *conf
 
 	wasteType := router.Group("/waste-types")
 
+	wasteType.Post("/", handler.Create)
 	wasteType.Get("/", handler.Find)
 	wasteType.Delete("/:id", handler.DeleteByID)
 	wasteType.Put("/:id", handler.UpdateByID)

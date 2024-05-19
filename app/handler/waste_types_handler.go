@@ -21,6 +21,17 @@ func NewWasteTypeHandler(uc domain.WasteTypeUsecase, v *validator.Validate) doma
 	}
 }
 
+func (w *wasteTypeHandler) Create(c fiber.Ctx) error {
+	var payload model.WasteTypeCreateOrUpdateRequest
+
+	if err := c.Bind().Body(&payload); err != nil {
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	}
+
+	resp := w.uc.Create(c.Context(), payload)
+	return c.Status(resp.StatusCode).JSON(resp)
+}
+
 func (w *wasteTypeHandler) UpdateByID(c fiber.Ctx) error {
 	id := c.Params("id")
 	var payload model.WasteTypeCreateOrUpdateRequest

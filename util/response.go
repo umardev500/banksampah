@@ -1,6 +1,7 @@
 package util
 
 import (
+	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/umardev500/banksampah/constant"
 	"github.com/umardev500/banksampah/types"
@@ -27,5 +28,13 @@ func MakeResponse(ticket uuid.UUID, code int, message string, data interface{}, 
 		Message:    message,
 		Data:       data,
 		Error:      err,
+	}
+}
+
+func InternalErrorResponse(ticket uuid.UUID) Response {
+	return Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusInternalServerError,
+		Message:    fiber.ErrInternalServerError.Message,
 	}
 }

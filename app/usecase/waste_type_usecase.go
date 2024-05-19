@@ -23,6 +23,29 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 	}
 }
 
+func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
+	ticket := uuid.New()
+	payload.ID = ticket.String()
+
+	err := uc.repo.Create(ctx, payload)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.WasteType.SuccessCreate,
+	}
+}
+
 func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
 	handler, err := util.ParseIDWithResponse(&payload.ID)
@@ -41,11 +64,7 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCr
 
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FaildUpdate))
 
-		return util.Response{
-			Ticket:     ticket,
-			StatusCode: fiber.StatusInternalServerError,
-			Message:    fiber.ErrInternalServerError.Message,
-		}
+		return util.InternalErrorResponse(ticket)
 	}
 
 	return util.Response{

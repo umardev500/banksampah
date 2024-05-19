@@ -29,11 +29,11 @@ func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateO
 	err := uc.repo.Create(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FaildUpdate))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FaildUpdate))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
 
 		return util.InternalErrorResponse(ticket)
 	}

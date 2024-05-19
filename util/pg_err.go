@@ -1,6 +1,8 @@
 package util
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -23,13 +25,24 @@ func GetPgError(errs error) (response Response, err error) {
 			// case for duplicate
 			code = fiber.StatusBadRequest
 			msg = "Duplicate entry detected. Please try again."
-			detailMsg, matches := RegexDuplicate(pgErr.Detail)
-			details = &types.SqlDuplicateDetail{
+			detailMsg, matches := RegexKeyValue(pgErr.Detail, string(constant.SqlErrPatternDuplicate))
+			details = &types.SqlErrDetail{
 				Field: matches[1],
 				Value: matches[2],
 				Error: detailMsg,
 			}
 			clientCode = string(constant.ErrCodeNameDuplicate)
+		case string(constant.SqlConstraint):
+			code = fiber.StatusBadRequest
+			msg = "Constraint error detected."
+			_, matches := RegexKeyValue(pgErr.Detail, string(constant.SqlErrConstraintPattern))
+			details = &types.SqlErrDetail{
+				// Todo
+				Field: matches[1],
+				Value: matches[2],
+				Error: fmt.Sprintf("%s is not exists.", types.MappingKey(matches[1])),
+			}
+			clientCode = string(constant.ErrCodeNameConstraint)
 		}
 
 		return Response{

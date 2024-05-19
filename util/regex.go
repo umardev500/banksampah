@@ -3,14 +3,12 @@ package util
 import (
 	"fmt"
 	"regexp"
-
-	"github.com/umardev500/banksampah/constant"
 )
 
-// RegexDuplicate is regex to parse duplicate entry
+// RegexKeyValue is regex to parse key value error
 // will return string which is contain about column and value
-func RegexDuplicate(src string) (msg string, matches []string) {
-	re := regexp.MustCompile(string(constant.SqlErrPatternDuplicate))
+func RegexKeyValue(src, pattern string) (msg string, matches []string) {
+	re := regexp.MustCompile(pattern)
 	matches = re.FindStringSubmatch(src)
 
 	if len(matches) > 2 {

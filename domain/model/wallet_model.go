@@ -25,3 +25,9 @@ type WalletCreateOrUpdateRequest struct {
 	Description string `json:"description"`
 	Type        string `json:"-"`
 }
+
+type WalletMoveBalanceRequest struct {
+	FromWalletID string  `json:"from_wallet_id" validate:"required"`
+	ToWalletID   string  `json:"to_wallet_id" validate:"required"`
+	Amount       float64 `json:"amount" validate:"required,gt=0"`
+}

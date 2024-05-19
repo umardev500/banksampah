@@ -18,6 +18,74 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 	}
 }
 
+func (repo *walletRepo) MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) ([]model.Wallet, error) {
+	decreaseWalletFrom := `--sql
+		UPDATE wallets SET
+		balance = balance - $1
+		WHERE id = $2
+		AND balance >= $1
+		RETURNING *
+	`
+	increaseWalletTo := `--sql
+		UPDATE wallets SET
+		balance = balance + $1
+		WHERE id = $2
+		RETURNING *
+	`
+
+	var toAndFromWallet []model.Wallet
+
+	// Transaction
+	err := repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		// Decrease wallet from
+		row := repo.pgxConfig.TrOrDB(ctx).QueryRow(ctx, decreaseWalletFrom, payload.Amount, payload.FromWalletID)
+		var result model.Wallet
+		err := row.Scan(
+			&result.ID,
+			&result.UserD,
+			&result.Name,
+			&result.Balance,
+			&result.Description,
+			&result.Type,
+			&result.CreatedAt,
+			&result.UpdatedAt,
+			&result.DeletedAt,
+		)
+		if err != nil {
+			return err
+		}
+
+		toAndFromWallet = append(toAndFromWallet, result)
+
+		// Increase wallet to
+		row = repo.pgxConfig.TrOrDB(ctx).QueryRow(ctx, increaseWalletTo, payload.Amount, payload.ToWalletID)
+		err = row.Scan(
+			&result.ID,
+			&result.UserD,
+			&result.Name,
+			&result.Balance,
+			&result.Description,
+			&result.Type,
+			&result.CreatedAt,
+			&result.UpdatedAt,
+			&result.DeletedAt,
+		)
+		if err != nil {
+			return err
+		}
+
+		toAndFromWallet = append(toAndFromWallet, result)
+
+		return err
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return toAndFromWallet, nil
+}
+
 func (repo *walletRepo) FindByID(ctx context.Context, id string) (model.Wallet, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql

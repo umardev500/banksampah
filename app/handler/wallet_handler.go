@@ -24,6 +24,25 @@ func NewWalletHandler(uc domain.WalletUsecase, v *validator.Validate) domain.Wal
 	}
 }
 
+func (handler *walletHandler) MoveBalanceToWallet(c fiber.Ctx) error {
+	var payload model.WalletMoveBalanceRequest
+	if err := c.Bind().Body(&payload); err != nil {
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	}
+
+	// Handle validation
+	if hndl, err := util.ValidateJson(c, handler.v, payload); err != nil {
+		return hndl
+	}
+
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	resp := handler.uc.MoveBalanceToWallet(ctx, payload)
+
+	return c.Status(resp.StatusCode).JSON(resp)
+}
+
 func (handler *walletHandler) DeleteByID(c fiber.Ctx) error {
 	id := c.Params("id")
 

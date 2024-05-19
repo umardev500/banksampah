@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
@@ -21,8 +22,9 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		INSERT INTO wallets (id, "name", "description") VALUES ($1, $2, $3);
+		INSERT INTO wallets (id, user_id, "name", "description") VALUES ($1, $2, $3, $4);
 	`
-	_, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Description)
+	fmt.Println(sql)
+	_, err := queries.Exec(ctx, sql, payload.ID, payload.UserID, payload.Name, payload.Description)
 	return err
 }

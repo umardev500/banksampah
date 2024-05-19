@@ -2,6 +2,7 @@ package model
 
 type WalletCreateOrUpdateRequest struct {
 	ID          string `json:"-"`
-	Name        string `json:"name"`
+	UserID      string `json:"-"`
+	Name        string `json:"name" validate:"required,min=6"`
 	Description string `json:"description"`
 }

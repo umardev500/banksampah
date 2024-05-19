@@ -23,6 +23,13 @@ func New(app *fiber.App, v *validator.Validate, pgxConfig *config.PgxConfig) *Ap
 
 func (api *Api) Register() {
 	apiRoute := api.app.Group("/api")
+	injector := inject.Inject{
+		Router:    apiRoute,
+		V:         api.v,
+		PgxConfig: api.pgxConfig,
+	}
+
 	inject.UserInject(apiRoute, api.v, api.pgxConfig)
 	inject.WasteTypeInject(apiRoute, api.v, api.pgxConfig)
+	inject.WalletInject(injector)
 }

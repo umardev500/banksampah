@@ -49,7 +49,7 @@ func (uc *walletUsecase) MoveBalanceToWallet(ctx context.Context, payload model.
 				Message:    types.Wallet.OutOfBalance,
 				Error: &util.ResponseError{
 					Code:    constant.ErrCodeNameOutOfBalance,
-					Details: "Transfer may be failed because wallet is out of balance, or ensure it's wallet id is correct.",
+					Details: types.Wallet.OutOfBalanceDetails,
 				},
 			}
 		}

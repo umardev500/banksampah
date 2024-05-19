@@ -18,11 +18,27 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 	}
 }
 
-func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) error {
+func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (model.Wallet, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		INSERT INTO wallets (id, user_id, "name", "description") VALUES ($1, $2, $3, $4);
+		INSERT INTO wallets (id, user_id, "name", "description") VALUES ($1, $2, $3, $4)
+		RETURNING *
 	`
-	_, err := queries.Exec(ctx, sql, payload.ID, payload.UserID, payload.Name, payload.Description)
-	return err
+	// result, err := queries.Exec(ctx, sql, payload.ID, payload.UserID, payload.Name, payload.Description)
+	// fmt.Println(result)
+
+	row := queries.QueryRow(ctx, sql, payload.ID, payload.UserID, payload.Name, payload.Description)
+	var result model.Wallet
+	err := row.Scan(
+		&result.ID,
+		&result.UserD,
+		&result.Name,
+		&result.Amount,
+		&result.Description,
+		&result.CreatedAt,
+		&result.UpdatedAt,
+		&result.DeletedAt,
+	)
+
+	return result, err
 }

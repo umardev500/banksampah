@@ -17,5 +17,5 @@ type WalletUsecase interface {
 }
 
 type WalletRepository interface {
-	Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) error
+	Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (model.Wallet, error)
 }

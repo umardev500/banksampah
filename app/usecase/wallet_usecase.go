@@ -26,7 +26,7 @@ func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateO
 	ticket := uuid.New()
 	payload.ID = uuid.New().String()
 
-	err := uc.repo.Create(ctx, payload)
+	result, err := uc.repo.Create(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
@@ -42,5 +42,6 @@ func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateO
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
 		Message:    types.Wallet.SuccessCreate,
+		Data:       result,
 	}
 }

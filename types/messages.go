@@ -7,6 +7,8 @@ var WasteType = struct {
 	SuccessDelete string
 	SuccessUpdate string
 	FaildUpdate   string
+	SuccessCreate string
+	FailedCreate  string
 }{
 	FailedGetAll:  "Failed to get all waste types",
 	SuccessGetAll: "Successfully get all waste types",
@@ -14,6 +16,8 @@ var WasteType = struct {
 	SuccessDelete: "Successfully delete waste type",
 	SuccessUpdate: "Successfully update waste type",
 	FaildUpdate:   "Failed to update waste type",
+	SuccessCreate: "Successfully create waste type",
+	FailedCreate:  "Failed to create waste type",
 }
 
 // ID

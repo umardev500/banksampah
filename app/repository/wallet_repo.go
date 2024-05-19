@@ -18,6 +18,23 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 	}
 }
 
+func (repo *walletRepo) FindByID(ctx context.Context, id string) (model.Wallet, error) {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		SELECT * FROM wallets WHERE id=$1
+	`
+	row := queries.QueryRow(ctx, sql, id)
+	var result model.Wallet
+	err := row.Scan(
+		&result.ID,
+		&result.UserD,
+		&result.Name,
+		&result.Description,
+		&result.Type,
+	)
+	return result, err
+}
+
 func (repo *walletRepo) DeleteByID(ctx context.Context, id string) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS wallets (
     id UUID NOT NULL DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL,
-    "name" VARCHAR(50),
+    "name" VARCHAR(50) NOT NULL UNIQUE,
     amount DECIMAL(10, 2) DEFAULT 0.00,
     "description" TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,

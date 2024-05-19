@@ -20,15 +20,31 @@ func NewWasteTypeRepo(pgxConfig *config.PgxConfig) domain.WasteTypeRepository {
 	}
 }
 
-func (repo wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error {
+func (repo wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) (*model.WasteType, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		INSERT INTO waste_types (id, "name", "point", "description") VALUES ($1, $2, $3, $4);
+		INSERT INTO waste_types (id, "name", "point", "description") VALUES ($1, $2, $3, $4)
+		RETURNING *
 	`
 
-	_, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
+	// _, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
+	row := queries.QueryRow(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
 
-	return err
+	var result model.WasteType
+	err := row.Scan(
+		&result.ID,
+		&result.Name,
+		&result.Point,
+		&result.Description,
+		&result.CreatedAt,
+		&result.UpdatedAt,
+		&result.DeletedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, err
 }
 
 func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error {

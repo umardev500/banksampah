@@ -22,7 +22,7 @@ func (s *Seeder) UserRoleSeeds(ctx context.Context) error {
 	q := s.Conn.TrOrDB(ctx)
 	logger := util.NewLogger()
 
-	log.Info().Msg("📦 Dropping user_roles...")
+	log.Info().Msg("📦 Dropping user roles...")
 	filePath := "database/seeder/data/user_role_data.json"
 	f, err := os.ReadFile(filePath)
 	if err != nil {
@@ -52,7 +52,7 @@ func (s *Seeder) UserRoleSeeds(ctx context.Context) error {
 	if err != nil {
 		logger.Upline()
 		logger.FirstLine()
-		log.Error().Msg("📦 Seeding user_roles... 🚧")
+		log.Error().Msg("📦 Seeding user roles... 🚧")
 		fmt.Println(err)
 
 		return err
@@ -62,7 +62,7 @@ func (s *Seeder) UserRoleSeeds(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msgf("📦 Seeding user_roles... ✅ (%d rows)", copyCount)
+	log.Info().Msgf("📦 Seeding user roles... ✅ (%d rows)", copyCount)
 
 	return nil
 }
@@ -71,7 +71,7 @@ func (s *Seeder) UserRoleDown(ctx context.Context) error {
 	q := s.Conn.TrOrDB(ctx)
 	logger := util.NewLogger()
 
-	log.Info().Msg("📦 Dropping user_roles...")
+	log.Info().Msg("📦 Dropping user roles...")
 	filePath := "database/seeder/data/user_role_data.json"
 	f, err := os.ReadFile(filePath)
 	if err != nil {
@@ -95,7 +95,7 @@ func (s *Seeder) UserRoleDown(ctx context.Context) error {
 	if err != nil {
 		logger.Upline()
 		logger.FirstLine()
-		log.Error().Msg("📦 Dropping user_roles... 🚧")
+		log.Error().Msg("📦 Dropping user roles... 🚧")
 		fmt.Println(err)
 
 		return err
@@ -105,7 +105,7 @@ func (s *Seeder) UserRoleDown(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msg("📦 Dropping user_roles... ✅")
+	log.Info().Msg("📦 Dropping user roles... ✅")
 
 	return nil
 }

@@ -107,7 +107,7 @@ func (s *Seeder) UserDown(ctx context.Context) error {
 
 	logger.UplineClearPrev()
 
-	log.Info().Msg("📦 Dropping user_roles... ✅")
+	log.Info().Msg("📦 Dropping users... ✅")
 
 	return nil
 }

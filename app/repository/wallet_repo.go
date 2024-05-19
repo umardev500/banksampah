@@ -19,5 +19,10 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 }
 
 func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) error {
-	return nil
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		INSERT INTO wallets (id, "name", "description") VALUES ($1, $2, $3);
+	`
+	_, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Description)
+	return err
 }

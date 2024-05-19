@@ -10,12 +10,15 @@ import (
 
 type WalletHandler interface {
 	Create(c fiber.Ctx) error
+	DeleteByID(c fiber.Ctx) error
 }
 
 type WalletUsecase interface {
 	Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response
+	DeleteByID(ctx context.Context, id string) util.Response
 }
 
 type WalletRepository interface {
 	Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (model.Wallet, error)
+	DeleteByID(ctx context.Context, id string) error
 }

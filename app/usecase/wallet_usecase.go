@@ -22,6 +22,34 @@ func NewWalletUsecase(repo domain.WalletRepository) domain.WalletUsecase {
 	}
 }
 
+func (uc *walletUsecase) DeleteByID(ctx context.Context, id string) util.Response {
+	ticket := uuid.New()
+	handler, err := util.ParseIDWithResponse(&id)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.WasteType.FailedDelete))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.DeleteByID(ctx, id)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedDelete))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedDelete))
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Wallet.SuccessDelete,
+	}
+}
+
 func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
 	payload.ID = uuid.New().String()

@@ -24,6 +24,17 @@ func NewWalletHandler(uc domain.WalletUsecase, v *validator.Validate) domain.Wal
 	}
 }
 
+func (handler *walletHandler) DeleteByID(c fiber.Ctx) error {
+	id := c.Params("id")
+
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	resp := handler.uc.DeleteByID(ctx, id)
+
+	return c.Status(resp.StatusCode).JSON(resp)
+}
+
 func (handler *walletHandler) Create(c fiber.Ctx) error {
 	var payload model.WalletCreateOrUpdateRequest
 	if err := c.Bind().Body(&payload); err != nil {

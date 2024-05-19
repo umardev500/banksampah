@@ -10,7 +10,7 @@ type Wallet struct {
 	ID          uuid.UUID  `json:"id"`
 	UserD       uuid.UUID  `json:"user_id,omitempty"`
 	Name        string     `json:"name"`
-	Amount      float64    `json:"amount"`
+	Balance     float64    `json:"balance"`
 	Description string     `json:"description"`
 	Type        string     `json:"type"`
 	CreatedAt   time.Time  `json:"created_at"`

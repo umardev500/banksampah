@@ -42,7 +42,7 @@ func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOr
 		&result.ID,
 		&result.UserD,
 		&result.Name,
-		&result.Amount,
+		&result.Balance,
 		&result.Description,
 		&result.Type,
 		&result.CreatedAt,

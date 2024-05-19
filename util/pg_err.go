@@ -40,7 +40,7 @@ func GetPgError(errs error) (response Response, err error) {
 				// Todo
 				Field: matches[1],
 				Value: matches[2],
-				Error: fmt.Sprintf("%s is not exists.", types.MappingKey(matches[1])),
+				Error: fmt.Sprintf("%s is not exists.", MappingKey(matches[1])),
 			}
 			clientCode = string(constant.ErrCodeNameConstraint)
 		}

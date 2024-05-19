@@ -25,11 +25,12 @@ func NewWalletUsecase(repo domain.WalletRepository) domain.WalletUsecase {
 func (uc *walletUsecase) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
 	payload.ID = uuid.New().String()
+	payload.Type = string(types.WalletExtension)
 
 	result, err := uc.repo.Create(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
+			log.Error().gf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
 			return response
 		}
 

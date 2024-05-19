@@ -12,6 +12,7 @@ type Wallet struct {
 	Name        string     `json:"name"`
 	Amount      float64    `json:"amount"`
 	Description string     `json:"description"`
+	Type        string     `json:"type"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
@@ -22,4 +23,5 @@ type WalletCreateOrUpdateRequest struct {
 	UserID      string `json:"-"`
 	Name        string `json:"name" validate:"required,min=6"`
 	Description string `json:"description"`
+	Type        string `json:"-"`
 }

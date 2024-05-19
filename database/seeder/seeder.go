@@ -47,6 +47,12 @@ func (s *Seeder) Register() {
 			return err
 		}
 
+		// Wallet
+		err = s.WalletDown(ctx)
+		if err != nil {
+			return err
+		}
+
 		// User
 		err = s.UserDown(ctx)
 		if err != nil {
@@ -100,6 +106,12 @@ func (s *Seeder) Register() {
 
 		// Waste Deposit
 		err = s.WasteDepositSeeds(ctx)
+		if err != nil {
+			return err
+		}
+
+		// Wallet
+		err = s.WalletSeeds(ctx)
 		if err != nil {
 			return err
 		}

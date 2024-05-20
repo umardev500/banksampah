@@ -16,6 +16,7 @@ type WasteDepo struct {
 type WasteDepoCreateRequest struct {
 	ID          string  `json:"-" checkid:"id"`
 	UserID      string  `json:"-" checkid:"user_id"`
+	WalletID    string  `json:"wallet_id" checkid:"wallet_id"`
 	WasteTypeID string  `json:"waste_type_id" validate:"required" checkid:"waste_type_id"`
 	Quantity    float64 `json:"quantity" validate:"required"`
 	Description string  `json:"description" validate:"required"`

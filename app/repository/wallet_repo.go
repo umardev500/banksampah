@@ -35,6 +35,8 @@ func (repo *walletRepo) SetBalance(ctx context.Context, payload model.WalletSetB
 		return nil, err
 	}
 
+	balance = &tempBalance
+
 	return
 }
 

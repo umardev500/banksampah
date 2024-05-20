@@ -28,4 +28,5 @@ type WalletRepository interface {
 	FindByID(ctx context.Context, id string) (model.Wallet, error)
 	MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) ([]model.Wallet, error)
 	UpdateByID(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (*model.Wallet, error)
+	SetBalance(ctx context.Context, payload model.WalletSetBalanceRequest) (*float64, error)
 }

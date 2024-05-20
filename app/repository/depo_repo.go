@@ -47,11 +47,10 @@ func (repo *wasteDepoRepository) FindByID(ctx context.Context, id string) (wd *m
 	return
 }
 
-func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload model.WasteConfirmRequest) (*model.WasteDepo, error) {
+func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload model.WasteDepoConfirmRequest) (*model.WasteDepo, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		UPDATE waste_deposits SET
-		RETURNING *
 	`
 	rawSql, args := util.BuildUpdateQuery(sql, payload, []types.Filter{
 		{
@@ -59,12 +58,20 @@ func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload mod
 			Operator: "=",
 			Value:    payload.ID,
 		},
+		{
+			Field:           "status",
+			Operator:        "=",
+			Value:           string(model.WasteDepoStatusUnConfirmed),
+			LogicalOperator: "AND",
+		},
 	})
+	rawSql = rawSql + " " + "RETURNING *"
 
 	var depo model.WasteDepo
 	err := queries.QueryRow(ctx, rawSql, args...).Scan(
 		&depo.ID,
 		&depo.UserID,
+		&depo.WalletID,
 		&depo.WasteTypeID,
 		&depo.Quantity,
 		&depo.Description,
@@ -72,6 +79,7 @@ func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload mod
 		&depo.CreatedAt,
 		&depo.UpdatedAt,
 		&depo.DeletedAt,
+		&depo.CreatedBy,
 	)
 	if err != nil {
 		return nil, err

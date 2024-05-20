@@ -38,3 +38,11 @@ func InternalErrorResponse(ticket uuid.UUID) Response {
 		Message:    fiber.ErrInternalServerError.Message,
 	}
 }
+
+func NoRowsErrorResponse(ticket uuid.UUID) Response {
+	return Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusNotFound,
+		Message:    fiber.ErrNotFound.Message,
+	}
+}

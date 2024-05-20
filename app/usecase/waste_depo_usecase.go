@@ -5,6 +5,7 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
@@ -34,7 +35,7 @@ func NewWasteDepoUsecase(
 	}
 }
 
-func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.WasteConfirmRequest) (resp util.Response) {
+func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.WasteDepoConfirmRequest) (resp util.Response) {
 	ticket := uuid.New()
 	payload.Status = model.WasteDepoStatusConfirmed
 
@@ -46,8 +47,9 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 	}
 
 	var balance *float64
+	var wd *model.WasteDepo
 	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
-		_, err = uc.repo.ConfirmDeposit(ctx, payload)
+		wd, err = uc.repo.ConfirmDeposit(ctx, payload)
 		if err != nil {
 			return err
 		}
@@ -62,7 +64,7 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 
 		// Set wallet balance increasing
 		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
-			ID:      payload.WalletID,
+			ID:      wd.WalletID,
 			SetType: model.SetIncrease,
 			Amount:  point,
 		}
@@ -79,6 +81,10 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))
 
+		if err == pgx.ErrNoRows {
+			return util.NoRowsErrorResponse(ticket)
+		}
+
 		return util.InternalErrorResponse(ticket)
 	}
 
@@ -87,7 +93,7 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 		StatusCode: fiber.StatusOK,
 		Message:    types.Deposit.SuccessCreate,
 		Data: map[string]interface{}{
-			"wallet_id": payload.WalletID,
+			"wallet_id": wd.WalletID,
 			"balance":   balance,
 		},
 	}

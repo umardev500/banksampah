@@ -15,11 +15,12 @@ type WasteDepo struct {
 	WalletID    string          `json:"wallet_id"`
 	WasteTypeID string          `json:"waste_type_id"`
 	Quantity    float64         `json:"quantity"`
-	Description float64         `json:"description"`
+	Description string          `json:"description"`
 	Status      WasteDepoStatus `json:"status"`
 	CreatedAt   time.Time       `json:"created_at"`
 	UpdatedAt   *time.Time      `json:"updated_at,omitempty"`
 	DeletedAt   *time.Time      `json:"deleted_at,omitempty"`
+	CreatedBy   string          `json:"created_by,omitempty"`
 }
 
 type WasteDepoCreateRequest struct {
@@ -33,10 +34,9 @@ type WasteDepoCreateRequest struct {
 	CreatedBy   string          `json:"-" checkid:"created_by"`
 }
 
-type WasteConfirmRequest struct {
-	ID          string          `json:"id" checkid:"id"`
-	WalletID    string          `json:"wallet_id" validate:"required" checkid:"wallet_id"`
-	WasteTypeID string          `json:"waste_type_id" validate:"required" checkid:"waste_type_id"`
-	Quantity    float64         `json:"quantity" validate:"required"`
-	Status      WasteDepoStatus `json:"-"`
+type WasteDepoConfirmRequest struct {
+	ID          string          `json:"-" checkid:"id"`
+	WasteTypeID string          `json:"waste_type_id" validate:"required" checkid:"waste_type_id" db:"waste_type_id"`
+	Quantity    float64         `json:"quantity" validate:"required" db:"quantity"`
+	Status      WasteDepoStatus `json:"-" db:"status"`
 }

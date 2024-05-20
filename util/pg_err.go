@@ -13,7 +13,7 @@ func GetPgError(errs error) (response Response, err error) {
 		errCode := pgErr.Code
 		ticket := uuid.New()
 		code := fiber.StatusInternalServerError
-		msg := pgErr.Detail
+		msg := fiber.ErrInternalServerError.Message
 		var clientCode string
 		var details interface{}
 

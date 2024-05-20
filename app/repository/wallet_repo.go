@@ -6,6 +6,8 @@ import (
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
+	"github.com/umardev500/banksampah/types"
+	"github.com/umardev500/banksampah/util"
 )
 
 type walletRepo struct {
@@ -16,6 +18,27 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 	return &walletRepo{
 		pgxConfig: pgxConfig,
 	}
+}
+
+func (repo *walletRepo) Update(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (returning *model.Wallet, err error) {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		UPDATE wallets SET
+	`
+	rawSql, args := util.BuildUpdateQuery(sql, payload, []types.Filter{
+		{
+			Field:    "id",
+			Operator: "=",
+			Value:    payload.ID,
+		},
+	})
+	if args == nil {
+		return
+	}
+
+	_, err = queries.Exec(ctx, rawSql, args...)
+
+	return
 }
 
 func (repo *walletRepo) MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) ([]model.Wallet, error) {
@@ -149,7 +172,7 @@ func (repo *walletRepo) DeleteByID(ctx context.Context, id string) error {
 	return err
 }
 
-func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (model.Wallet, error) {
+func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (*model.Wallet, error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		INSERT INTO wallets (id, user_id, "name", "description", "type") VALUES ($1, $2, $3, $4, $5)
@@ -172,5 +195,5 @@ func (repo *walletRepo) Create(ctx context.Context, payload model.WalletCreateOr
 		&result.DeletedAt,
 	)
 
-	return result, err
+	return &result, err
 }

@@ -33,7 +33,16 @@ type WalletMoveBalanceRequest struct {
 }
 
 // Set balance
+
+type SetType string
+
+var (
+	SetIncrease SetType = "+"
+	SetDecrease SetType = "-"
+)
+
 type WalletSetBalanceRequest struct {
-	ID     string  `json:"-"`
-	Amount float64 `json:"-" db:"balance"`
+	ID      string  `json:"-"`
+	SetType SetType `json:"-"`
+	Amount  float64 `json:"-" db:"balance"`
 }

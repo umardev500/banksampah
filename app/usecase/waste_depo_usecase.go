@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
+	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
 	"github.com/umardev500/banksampah/types"
@@ -13,12 +14,16 @@ import (
 )
 
 type wasteDepoUsecase struct {
-	repo domain.WasteDepoRepository
+	repo       domain.WasteDepoRepository
+	walletRepo domain.WalletRepository
+	pgxConfig  *config.PgxConfig
 }
 
-func NewWasteDepoUsecase(repo domain.WasteDepoRepository) domain.WasteDepoUsecase {
+func NewWasteDepoUsecase(repo domain.WasteDepoRepository, walletRepo domain.WalletRepository, pgxConfig *config.PgxConfig) domain.WasteDepoUsecase {
 	return &wasteDepoUsecase{
-		repo: repo,
+		repo:       repo,
+		walletRepo: walletRepo,
+		pgxConfig:  pgxConfig,
 	}
 }
 
@@ -35,7 +40,24 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 		return *handler
 	}
 
-	err = uc.repo.Deposit(ctx, payload)
+	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		err = uc.repo.Deposit(ctx, payload)
+		if err != nil {
+			return err
+		}
+
+		// Find waste category
+
+		// Set wallet balance increasing
+		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
+			ID:      payload.WasteTypeID,
+			SetType: model.SetIncrease,
+			Amount:  1000,
+		}
+		_, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
+
+		return err
+	})
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))

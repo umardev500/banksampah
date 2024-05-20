@@ -32,6 +32,7 @@ func (repo *walletRepo) SetBalance(ctx context.Context, payload model.WalletSetB
 	row := queries.QueryRow(ctx, sql, payload.ID, payload.Amount)
 	err = row.Scan(tempBalance)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 

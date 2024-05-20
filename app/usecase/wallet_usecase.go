@@ -25,9 +25,44 @@ func NewWalletUsecase(repo domain.WalletRepository) domain.WalletUsecase {
 }
 
 func (uc *walletUsecase) UpdateByID(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (resp util.Response) {
-	// ticket := uuid.New()
+	ticket := uuid.New()
+	handler, err := util.CheckIDWithResponse(payload.ID)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedUpdate))
+		handler.Ticket = ticket
+		return *handler
+	}
 
-	return
+	wallet, err := uc.repo.UpdateByID(ctx, payload)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedUpdate))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedUpdate))
+
+		if err == pgx.ErrNoRows {
+			return util.Response{
+				Ticket:     ticket,
+				StatusCode: fiber.StatusBadRequest,
+				Message:    types.Wallet.OutOfBalance,
+				Error: &util.ResponseError{
+					Code:    constant.ErrCodeNameOutOfBalance,
+					Details: types.Wallet.OutOfBalanceDetails,
+				},
+			}
+		}
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Wallet.SuccessUpdate,
+		Data:       wallet,
+	}
 }
 
 func (uc *walletUsecase) MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) util.Response {

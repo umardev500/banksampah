@@ -25,7 +25,25 @@ func NewWalletHandler(uc domain.WalletUsecase, v *validator.Validate) domain.Wal
 }
 
 func (handler *walletHandler) UpdateByID(c fiber.Ctx) error {
-	return nil
+	id := c.Params("id")
+
+	var payload model.WalletCreateOrUpdateRequest
+	if err := c.Bind().Body(&payload); err != nil {
+		return c.SendStatus(fiber.StatusUnprocessableEntity)
+	}
+
+	// Handle validation
+	if hndl, err := util.ValidateJson(c, handler.v, payload); err != nil {
+		return hndl
+	}
+
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	payload.ID = id
+	resp := handler.uc.UpdateByID(ctx, payload)
+
+	return c.Status(resp.StatusCode).JSON(resp)
 }
 
 func (handler *walletHandler) MoveBalanceToWallet(c fiber.Ctx) error {

@@ -29,18 +29,22 @@ var MustUUIDValidError string = "The ID must be a valid UUID"
 // Wallet
 var wallet = "wallet"
 var Wallet = struct {
-	FailedGetAll       string
-	SuccessGetAll      string
-	FailedDelete       string
-	SuccessDelete      string
-	SuccessUpdate      string
-	FaildUpdate        string
-	SuccessCreate      string
-	FailedCreate       string
-	SuccessMoveBalance string
-	FaildMoveBalance   string
-	OutOfBalance       string
-	// Details
+	// find
+	FailedGetAll  string
+	SuccessGetAll string
+	// Delete
+	FailedDelete  string
+	SuccessDelete string
+	// Update
+	SuccessUpdate string
+	FailedUpdate  string
+	// Create
+	SuccessCreate string
+	FailedCreate  string
+	// Extension
+	SuccessMoveBalance  string
+	FaildMoveBalance    string
+	OutOfBalance        string
 	OutOfBalanceDetails string
 }{
 	FailedGetAll:        fmt.Sprintf("Failed to get all %s", wallet),
@@ -48,7 +52,7 @@ var Wallet = struct {
 	FailedDelete:        fmt.Sprintf("Failed to delete %s", wallet),
 	SuccessDelete:       fmt.Sprintf("Successfully delete %s", wallet),
 	SuccessUpdate:       fmt.Sprintf("Successfully update %s", wallet),
-	FaildUpdate:         fmt.Sprintf("Failed to update %s", wallet),
+	FailedUpdate:        fmt.Sprintf("Failed to update %s", wallet),
 	SuccessCreate:       fmt.Sprintf("Successfully create %s", wallet),
 	FailedCreate:        fmt.Sprintf("Failed to create %s", wallet),
 	SuccessMoveBalance:  "Successfully move balance",

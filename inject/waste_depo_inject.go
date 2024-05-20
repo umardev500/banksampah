@@ -9,7 +9,8 @@ import (
 func WasteDepoInject(inject Inject) {
 	repo := repository.NewWasteDepoRepository(inject.PgxConfig)
 	walletRepo := repository.NewWalletRepository(inject.PgxConfig)
-	uc := usecase.NewWasteDepoUsecase(repo, walletRepo, inject.PgxConfig)
+	wasteTypeRepo := repository.NewWasteTypeRepo(inject.PgxConfig)
+	uc := usecase.NewWasteDepoUsecase(repo, walletRepo, wasteTypeRepo, inject.PgxConfig)
 	handler := handler.NewWasteDepoHandler(uc, inject.V)
 
 	router := inject.Router.Group("/deposits")

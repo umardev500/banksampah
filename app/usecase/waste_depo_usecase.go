@@ -14,16 +14,23 @@ import (
 )
 
 type wasteDepoUsecase struct {
-	repo       domain.WasteDepoRepository
-	walletRepo domain.WalletRepository
-	pgxConfig  *config.PgxConfig
+	repo          domain.WasteDepoRepository
+	walletRepo    domain.WalletRepository
+	wasteTypeRepo domain.WasteTypeRepository
+	pgxConfig     *config.PgxConfig
 }
 
-func NewWasteDepoUsecase(repo domain.WasteDepoRepository, walletRepo domain.WalletRepository, pgxConfig *config.PgxConfig) domain.WasteDepoUsecase {
+func NewWasteDepoUsecase(
+	repo domain.WasteDepoRepository,
+	walletRepo domain.WalletRepository,
+	wasteTypeRepo domain.WasteTypeRepository,
+	pgxConfig *config.PgxConfig,
+) domain.WasteDepoUsecase {
 	return &wasteDepoUsecase{
-		repo:       repo,
-		walletRepo: walletRepo,
-		pgxConfig:  pgxConfig,
+		repo:          repo,
+		walletRepo:    walletRepo,
+		wasteTypeRepo: wasteTypeRepo,
+		pgxConfig:     pgxConfig,
 	}
 }
 
@@ -47,12 +54,18 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 		}
 
 		// Find waste category
+		wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
+		if err != nil {
+			return err
+		}
+
+		point := wt.Point * payload.Quantity
 
 		// Set wallet balance increasing
 		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
 			ID:      payload.WasteTypeID,
 			SetType: model.SetIncrease,
-			Amount:  1000,
+			Amount:  point,
 		}
 		_, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
 

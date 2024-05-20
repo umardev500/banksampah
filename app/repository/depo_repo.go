@@ -91,8 +91,8 @@ func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload mod
 func (repo *wasteDepoRepository) Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) (err error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		INSERT INTO waste_deposits (id, user_id, waste_type_id, quantity, "description", created_by) 
-		VALUES ($1, $2, $3, $4, $5, $6)
+		INSERT INTO waste_deposits (id, user_id, wallet_id, waste_type_id, quantity, "description", created_by) 
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 	`
 
 	_, err = queries.Exec(
@@ -100,6 +100,7 @@ func (repo *wasteDepoRepository) Deposit(ctx context.Context, payload model.Wast
 		sql,
 		payload.ID,
 		payload.UserID,
+		payload.WalletID,
 		payload.WasteTypeID,
 		payload.Quantity,
 		payload.Description,

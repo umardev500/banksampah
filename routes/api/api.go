@@ -32,4 +32,5 @@ func (api *Api) Register() {
 	inject.UserInject(apiRoute, api.v, api.pgxConfig)
 	inject.WasteTypeInject(apiRoute, api.v, api.pgxConfig)
 	inject.WalletInject(injector)
+	inject.WasteDepoInject(injector)
 }

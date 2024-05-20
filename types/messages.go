@@ -23,6 +23,7 @@ var Waste = struct {
 }
 
 // ID
+var FailedParseIDMessage string = "Failed to parse id"
 var InvalidIDMessage string = "Invalid ID"
 var MustUUIDValidError string = "The ID must be a valid UUID"
 

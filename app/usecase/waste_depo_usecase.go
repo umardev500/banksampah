@@ -25,15 +25,24 @@ func NewWasteDepoUsecase(repo domain.WasteDepoRepository) domain.WasteDepoUsecas
 func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) (resp util.Response) {
 	ticket := uuid.New()
 	payload.ID = uuid.New().String()
+	payload.UserID = types.DummyUserID     // Replace with actual id
+	payload.CreatedBy = types.DummyAdminID // Replace with actual id
 
-	err := uc.repo.Deposit(ctx, payload)
+	handler, err := util.ChekEntireIDFromStructWithResponse(payload)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.Deposit(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
-			log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))
 			return response
 		}
 
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FailedCreate))
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))
 
 		return util.InternalErrorResponse(ticket)
 	}
@@ -41,6 +50,6 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 	return util.Response{
 		Ticket:     ticket,
 		StatusCode: fiber.StatusOK,
-		Message:    types.Wallet.SuccessCreate,
+		Message:    types.Deposit.SuccessCreate,
 	}
 }

@@ -20,7 +20,7 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 	}
 }
 
-func (repo *walletRepo) Update(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (returning *model.Wallet, err error) {
+func (repo *walletRepo) UpdateByID(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (returning *model.Wallet, err error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		UPDATE wallets SET

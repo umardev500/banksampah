@@ -12,12 +12,14 @@ type WalletHandler interface {
 	Create(c fiber.Ctx) error
 	DeleteByID(c fiber.Ctx) error
 	MoveBalanceToWallet(c fiber.Ctx) error
+	UpdateByID(c fiber.Ctx) error
 }
 
 type WalletUsecase interface {
 	Create(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response
 	DeleteByID(ctx context.Context, id string) util.Response
 	MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) util.Response
+	UpdateByID(ctx context.Context, payload model.WalletCreateOrUpdateRequest) util.Response
 }
 
 type WalletRepository interface {

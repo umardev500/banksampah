@@ -23,20 +23,17 @@ func NewWalletRepository(pgxConfig *config.PgxConfig) domain.WalletRepository {
 
 func (repo *walletRepo) SetBalance(ctx context.Context, payload model.WalletSetBalanceRequest) (balance *float64, err error) {
 	queries := repo.pgxConfig.TrOrDB(ctx)
-	sql := `--sql
-		UPDATE wallet SET balance = $1 WHERE id = $2
+	sql := fmt.Sprintf(`--sql
+		UPDATE wallets SET balance = balance %s $1 WHERE id = $2
 		RETURNING balance
-	`
+	`, payload.SetType)
 
 	var tempBalance float64
-	row := queries.QueryRow(ctx, sql, payload.ID, payload.Amount)
-	err = row.Scan(tempBalance)
+	row := queries.QueryRow(ctx, sql, payload.Amount, payload.ID)
+	err = row.Scan(&tempBalance)
 	if err != nil {
-		fmt.Println(err)
 		return nil, err
 	}
-
-	fmt.Println(tempBalance)
 
 	return
 }

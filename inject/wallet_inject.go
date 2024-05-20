@@ -14,5 +14,8 @@ func WalletInject(inject Inject) {
 	router := inject.Router.Group("/wallets")
 	router.Post("/", handler.Create)
 	router.Delete("/:id", handler.DeleteByID)
-	router.Put("/move-balance", handler.MoveBalanceToWallet)
+	router.Put("/:id", handler.UpdateByID)
+
+	balance := router.Group("balance")
+	balance.Put("/move", handler.MoveBalanceToWallet)
 }

@@ -21,8 +21,8 @@ type Wallet struct {
 type WalletCreateOrUpdateRequest struct {
 	ID          string `json:"-"`
 	UserID      string `json:"-"`
-	Name        string `json:"name" validate:"required,min=6"`
-	Description string `json:"description"`
+	Name        string `json:"name" validate:"required,min=6" db:"name"`
+	Description string `json:"description" db:"description"`
 	Type        string `json:"-"`
 }
 

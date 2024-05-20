@@ -24,6 +24,12 @@ func NewWalletUsecase(repo domain.WalletRepository) domain.WalletUsecase {
 	}
 }
 
+func (uc *walletUsecase) UpdateByID(ctx context.Context, payload model.WalletCreateOrUpdateRequest) (resp util.Response) {
+	// ticket := uuid.New()
+
+	return
+}
+
 func (uc *walletUsecase) MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) util.Response {
 	ticket := uuid.New()
 	handler, err := util.ParseIDWithResponse(&payload.FromWalletID)

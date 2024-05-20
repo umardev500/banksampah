@@ -24,6 +24,10 @@ func NewWalletHandler(uc domain.WalletUsecase, v *validator.Validate) domain.Wal
 	}
 }
 
+func (handler *walletHandler) UpdateByID(c fiber.Ctx) error {
+	return nil
+}
+
 func (handler *walletHandler) MoveBalanceToWallet(c fiber.Ctx) error {
 	var payload model.WalletMoveBalanceRequest
 	if err := c.Bind().Body(&payload); err != nil {

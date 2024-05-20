@@ -60,3 +60,28 @@ var Wallet = struct {
 	OutOfBalance:        "Out of balance",
 	OutOfBalanceDetails: "Transfer may be failed because wallet is out of balance, or ensure it's wallet id is correct.",
 }
+
+var depo = "deposit"
+var Deposit = struct {
+	// find
+	FailedGetAll  string
+	SuccessGetAll string
+	// Delete
+	FailedDelete  string
+	SuccessDelete string
+	// Update
+	SuccessUpdate string
+	FailedUpdate  string
+	// Create
+	SuccessCreate string
+	FailedCreate  string
+}{
+	FailedGetAll:  fmt.Sprintf("Failed to get all %s", depo),
+	SuccessGetAll: fmt.Sprintf("Successfully get all %s", depo),
+	FailedDelete:  fmt.Sprintf("Failed to delete %s", depo),
+	SuccessDelete: fmt.Sprintf("Successfully delete %s", depo),
+	SuccessUpdate: fmt.Sprintf("Successfully update %s", depo),
+	FailedUpdate:  fmt.Sprintf("Failed to update %s", depo),
+	SuccessCreate: fmt.Sprintf("Successfully create %s", depo),
+	FailedCreate:  fmt.Sprintf("Failed to create %s", depo),
+}

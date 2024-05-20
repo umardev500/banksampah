@@ -104,14 +104,14 @@ func (s *Seeder) Register() {
 			return err
 		}
 
-		// Waste Deposit
-		err = s.WasteDepositSeeds(ctx)
+		// Wallet
+		err = s.WalletSeeds(ctx)
 		if err != nil {
 			return err
 		}
 
-		// Wallet
-		err = s.WalletSeeds(ctx)
+		// Waste Deposit
+		err = s.WasteDepositSeeds(ctx)
 		if err != nil {
 			return err
 		}

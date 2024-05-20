@@ -2,6 +2,7 @@
     {
         "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "user_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "wallet_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "waste_type_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "quantity": 10,
         "description": "Depo 1",
@@ -10,6 +11,7 @@
     {
         "id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2",
         "user_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "wallet_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "waste_type_id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2",
         "quantity": 5,
         "description": "Depo 2",

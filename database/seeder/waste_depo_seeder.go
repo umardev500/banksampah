@@ -15,6 +15,7 @@ import (
 type WasteDepositCreateSeed struct {
 	ID          uuid.UUID `json:"id"`
 	UserID      uuid.UUID `json:"user_id"`
+	WalletID    uuid.UUID `json:"wallet_id"`
 	WasteTypeID uuid.UUID `json:"waste_type_id"`
 	Quantity    int       `json:"quantity"`
 	Description string    `json:"description"`
@@ -43,11 +44,12 @@ func (s *Seeder) WasteDepositSeeds(ctx context.Context) error {
 	copyCount, err := q.CopyFrom(
 		ctx,
 		pgx.Identifier{"waste_deposits"},
-		[]string{"id", "user_id", "waste_type_id", "quantity", "description", "created_by"},
+		[]string{"id", "user_id", "wallet_id", "waste_type_id", "quantity", "description", "created_by"},
 		pgx.CopyFromSlice(len(rows), func(i int) ([]interface{}, error) {
 			return []interface{}{
 				rows[i].ID,
 				rows[i].UserID,
+				rows[i].WalletID,
 				rows[i].WasteTypeID,
 				rows[i].Quantity,
 				rows[i].Description,

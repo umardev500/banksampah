@@ -31,3 +31,11 @@ type WasteDepoCreateRequest struct {
 	Status      WasteDepoStatus `json:"-"`
 	CreatedBy   string          `json:"-" checkid:"created_by"`
 }
+
+type WasteConfirmRequest struct {
+	ID          string          `json:"id" checkid:"id"`
+	WalletID    string          `json:"wallet_id" checkid:"wallet_id"`
+	WasteTypeID string          `json:"waste_type_id" validate:"required" checkid:"waste_type_id"`
+	Quantity    float64         `json:"quantity" validate:"required"`
+	Status      WasteDepoStatus `json:"-"`
+}

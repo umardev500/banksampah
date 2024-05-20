@@ -34,6 +34,63 @@ func NewWasteDepoUsecase(
 	}
 }
 
+func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.WasteConfirmRequest) (resp util.Response) {
+	ticket := uuid.New()
+	payload.Status = model.WasteDepoStatusConfirmed
+
+	handler, err := util.ChekEntireIDFromStructWithResponse(payload)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		_, err = uc.repo.ConfirmDeposit(ctx, payload)
+		if err != nil {
+			return err
+		}
+
+		// Find waste category
+		wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
+		if err != nil {
+			return err
+		}
+
+		point := wt.Point * payload.Quantity
+
+		// Set wallet balance increasing
+		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
+			ID:      payload.WalletID,
+			SetType: model.SetIncrease,
+			Amount:  point,
+		}
+		balance, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
+
+		return err
+	})
+
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedCreate))
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Deposit.SuccessCreate,
+		Data: map[string]interface{}{
+			"id": payload.ID,
+		},
+	}
+}
+
 func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) (resp util.Response) {
 	ticket := uuid.New()
 	payload.ID = uuid.New().String()
@@ -52,22 +109,6 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 		if err != nil {
 			return err
 		}
-
-		// // Find waste category
-		// wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
-		// if err != nil {
-		// 	return err
-		// }
-
-		// point := wt.Point * payload.Quantity
-
-		// // Set wallet balance increasing
-		// var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
-		// 	ID:      payload.WalletID,
-		// 	SetType: model.SetIncrease,
-		// 	Amount:  point,
-		// }
-		// balance, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
 
 		return err
 	})

@@ -14,8 +14,11 @@ type WasteDepoHandler interface {
 
 type WasteDepoUsecase interface {
 	Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) util.Response
+	ConfirmDeposit(ctx context.Context, payload model.WasteConfirmRequest) util.Response
 }
 
 type WasteDepoRepository interface {
 	Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) error
+	ConfirmDeposit(ctx context.Context, payload model.WasteConfirmRequest) (*model.WasteDepo, error)
+	FindByID(ctx context.Context, id string) (*model.WasteDepo, error)
 }

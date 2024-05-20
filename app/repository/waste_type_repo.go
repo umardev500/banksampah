@@ -26,16 +26,18 @@ func (repo *wasteTypeRepo) FindByID(ctx context.Context, id string) (wt *model.W
 		SELECT * FROM waste_types WHERE id = $1
 	`
 
-	wt = &model.WasteType{}
+	var result model.WasteType
 	err = queries.QueryRow(ctx, sql, id).Scan(
-		wt.ID,
-		wt.Name,
-		wt.Point,
-		wt.Description,
-		wt.CreatedAt,
-		wt.UpdatedAt,
-		wt.DeletedAt,
+		&result.ID,
+		&result.Name,
+		&result.Point,
+		&result.Description,
+		&result.CreatedAt,
+		&result.UpdatedAt,
+		&result.DeletedAt,
 	)
+
+	wt = &result
 
 	return
 }

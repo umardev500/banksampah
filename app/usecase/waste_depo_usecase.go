@@ -47,28 +47,27 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 		return *handler
 	}
 
-	var balance *float64
 	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
 		err = uc.repo.Deposit(ctx, payload)
 		if err != nil {
 			return err
 		}
 
-		// Find waste category
-		wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
-		if err != nil {
-			return err
-		}
+		// // Find waste category
+		// wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
+		// if err != nil {
+		// 	return err
+		// }
 
-		point := wt.Point * payload.Quantity
+		// point := wt.Point * payload.Quantity
 
-		// Set wallet balance increasing
-		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
-			ID:      payload.WalletID,
-			SetType: model.SetIncrease,
-			Amount:  point,
-		}
-		balance, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
+		// // Set wallet balance increasing
+		// var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{
+		// 	ID:      payload.WalletID,
+		// 	SetType: model.SetIncrease,
+		// 	Amount:  point,
+		// }
+		// balance, err = uc.walletRepo.SetBalance(ctx, walletBalancePayload)
 
 		return err
 	})
@@ -88,8 +87,7 @@ func (uc *wasteDepoUsecase) Deposit(ctx context.Context, payload model.WasteDepo
 		StatusCode: fiber.StatusOK,
 		Message:    types.Deposit.SuccessCreate,
 		Data: map[string]interface{}{
-			"id":      payload.WalletID,
-			"balance": balance,
+			"id": payload.ID,
 		},
 	}
 }

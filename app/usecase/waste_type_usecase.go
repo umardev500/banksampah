@@ -49,7 +49,7 @@ func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreate
 
 func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
 	ticket := uuid.New()
-	handler, err := util.ParseIDWithResponse(&payload.ID)
+	handler, err := util.CheckIDWithResponse(&payload.ID)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 		handler.Ticket = ticket
@@ -77,7 +77,7 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCr
 
 func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response {
 	ticket := uuid.New()
-	handler, err := util.ParseIDWithResponse(&id)
+	handler, err := util.CheckIDWithResponse(&id)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 		handler.Ticket = ticket

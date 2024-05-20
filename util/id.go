@@ -16,8 +16,8 @@ func NewUUIDPointer() *uuid.UUID {
 	return &uuid
 }
 
-func ParseIDWithResponse(id *string) (resp *Response, err error) {
-	idUUID, err := uuid.Parse(*id)
+func CheckIDWithResponse(id string) (resp *Response, err error) {
+	_, err = uuid.Parse(id)
 	if err != nil {
 		return &Response{
 			StatusCode: fiber.StatusBadRequest,
@@ -28,8 +28,6 @@ func ParseIDWithResponse(id *string) (resp *Response, err error) {
 			},
 		}, err
 	}
-
-	*id = idUUID.String()
 
 	return nil, nil
 }

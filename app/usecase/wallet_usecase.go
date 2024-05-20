@@ -32,7 +32,7 @@ func (uc *walletUsecase) UpdateByID(ctx context.Context, payload model.WalletCre
 
 func (uc *walletUsecase) MoveBalanceToWallet(ctx context.Context, payload model.WalletMoveBalanceRequest) util.Response {
 	ticket := uuid.New()
-	handler, err := util.ParseIDWithResponse(&payload.FromWalletID)
+	handler, err := util.CheckIDWithResponse(payload.FromWalletID)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Wallet.FaildMoveBalance))
 		handler.Ticket = ticket
@@ -73,7 +73,7 @@ func (uc *walletUsecase) MoveBalanceToWallet(ctx context.Context, payload model.
 
 func (uc *walletUsecase) DeleteByID(ctx context.Context, id string) util.Response {
 	ticket := uuid.New()
-	handler, err := util.ParseIDWithResponse(&id)
+	handler, err := util.CheckIDWithResponse(id)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
 		handler.Ticket = ticket

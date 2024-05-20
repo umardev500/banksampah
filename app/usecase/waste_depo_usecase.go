@@ -45,6 +45,7 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 		return *handler
 	}
 
+	var balance *float64
 	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
 		_, err = uc.repo.ConfirmDeposit(ctx, payload)
 		if err != nil {
@@ -86,7 +87,8 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 		StatusCode: fiber.StatusOK,
 		Message:    types.Deposit.SuccessCreate,
 		Data: map[string]interface{}{
-			"id": payload.ID,
+			"wallet_id": payload.WalletID,
+			"balance":   balance,
 		},
 	}
 }

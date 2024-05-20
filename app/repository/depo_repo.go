@@ -29,6 +29,7 @@ func (repo *wasteDepoRepository) FindByID(ctx context.Context, id string) (wd *m
 	err = queries.QueryRow(ctx, sql, id).Scan(
 		&depo.ID,
 		&depo.UserID,
+		&depo.WalletID,
 		&depo.WasteTypeID,
 		&depo.Quantity,
 		&depo.Description,

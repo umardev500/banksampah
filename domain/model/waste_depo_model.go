@@ -12,6 +12,7 @@ var (
 type WasteDepo struct {
 	ID          string          `json:"id"`
 	UserID      string          `json:"user_id"`
+	WalletID    string          `json:"wallet_id"`
 	WasteTypeID string          `json:"waste_type_id"`
 	Quantity    float64         `json:"quantity"`
 	Description float64         `json:"description"`
@@ -34,7 +35,7 @@ type WasteDepoCreateRequest struct {
 
 type WasteConfirmRequest struct {
 	ID          string          `json:"id" checkid:"id"`
-	WalletID    string          `json:"wallet_id" checkid:"wallet_id"`
+	WalletID    string          `json:"wallet_id" validate:"required" checkid:"wallet_id"`
 	WasteTypeID string          `json:"waste_type_id" validate:"required" checkid:"waste_type_id"`
 	Quantity    float64         `json:"quantity" validate:"required"`
 	Status      WasteDepoStatus `json:"-"`

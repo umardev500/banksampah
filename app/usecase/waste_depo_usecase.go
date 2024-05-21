@@ -35,6 +35,38 @@ func NewWasteDepoUsecase(
 	}
 }
 
+func (uc *wasteDepoUsecase) DeleteByID(ctx context.Context, id string) (resp util.Response) {
+	ticket := uuid.New()
+	handler, err := util.CheckIDWithResponse(id)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.DeleteByID(ctx, id)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+			return response
+		}
+
+		if err == pgx.ErrNoRows {
+			return util.NoRowsErrorResponse(ticket)
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedDelete))
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Deposit.SuccessDelete,
+	}
+}
+
 func (uc *wasteDepoUsecase) FindByID(ctx context.Context, id string) (resp util.Response) {
 	ticket := uuid.New()
 	handler, err := util.CheckIDWithResponse(id)

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
@@ -18,6 +19,19 @@ func NewWasteDepoRepository(pgxConfig *config.PgxConfig) domain.WasteDepoReposit
 	return &wasteDepoRepository{
 		pgxConfig: pgxConfig,
 	}
+}
+
+func (repo *wasteDepoRepository) DeleteByID(ctx context.Context, id string) error {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		DELETE FROM waste_deposits WHERE id=$1
+	`
+	result, err := queries.Exec(ctx, sql, id)
+	if result.RowsAffected() == 0 {
+		return pgx.ErrNoRows
+	}
+
+	return err
 }
 
 func (repo *wasteDepoRepository) FindByID(ctx context.Context, id string) (wd *model.WasteDepo, err error) {

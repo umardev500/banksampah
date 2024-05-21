@@ -40,3 +40,9 @@ type WasteDepoConfirmRequest struct {
 	Quantity    float64         `json:"quantity" db:"quantity"`           // optional
 	Status      WasteDepoStatus `json:"-" db:"status"`
 }
+
+// Delete deposit by id type
+type WasteDepoDeleteByIDRequest struct {
+	ID        string `json:"-" checkid:"id"`
+	DeletedBy string `json:"-" checkid:"deleted_by"`
+}

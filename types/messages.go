@@ -70,8 +70,10 @@ var Deposit = struct {
 	FailedGetOne  string
 	SuccessGetOne string
 	// Delete
-	FailedDelete  string
-	SuccessDelete string
+	FailedDelete      string
+	SuccessDelete     string
+	FailedSoftDelete  string
+	SuccessSoftDelete string
 	// Update
 	SuccessUpdate string
 	FailedUpdate  string
@@ -79,14 +81,16 @@ var Deposit = struct {
 	SuccessCreate string
 	FailedCreate  string
 }{
-	FailedGetAll:  fmt.Sprintf("Failed to get all %s", depo),
-	SuccessGetAll: fmt.Sprintf("Successfully get all %s", depo),
-	FailedGetOne:  fmt.Sprintf("Failed to get %s by id", depo),
-	SuccessGetOne: fmt.Sprintf("Successfully get %s by id", depo),
-	FailedDelete:  fmt.Sprintf("Failed to delete %s", depo),
-	SuccessDelete: fmt.Sprintf("Successfully delete %s", depo),
-	SuccessUpdate: fmt.Sprintf("Successfully update %s", depo),
-	FailedUpdate:  fmt.Sprintf("Failed to update %s", depo),
-	SuccessCreate: fmt.Sprintf("Successfully create %s", depo),
-	FailedCreate:  fmt.Sprintf("Failed to create %s", depo),
+	FailedGetAll:      fmt.Sprintf("Failed to get all %s", depo),
+	SuccessGetAll:     fmt.Sprintf("Successfully get all %s", depo),
+	FailedGetOne:      fmt.Sprintf("Failed to get %s by id", depo),
+	SuccessGetOne:     fmt.Sprintf("Successfully get %s by id", depo),
+	FailedDelete:      fmt.Sprintf("Failed to delete %s", depo),
+	SuccessDelete:     fmt.Sprintf("Successfully delete %s", depo),
+	FailedSoftDelete:  fmt.Sprintf("Failed to soft delete %s", depo),
+	SuccessSoftDelete: fmt.Sprintf("Successfully soft delete %s", depo),
+	SuccessUpdate:     fmt.Sprintf("Successfully update %s", depo),
+	FailedUpdate:      fmt.Sprintf("Failed to update %s", depo),
+	SuccessCreate:     fmt.Sprintf("Successfully create %s", depo),
+	FailedCreate:      fmt.Sprintf("Failed to create %s", depo),
 }

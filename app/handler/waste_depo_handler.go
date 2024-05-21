@@ -8,6 +8,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
+	"github.com/umardev500/banksampah/types"
 	"github.com/umardev500/banksampah/util"
 )
 
@@ -21,6 +22,22 @@ func NewWasteDepoHandler(uc domain.WasteDepoUsecase, v *validator.Validate) doma
 		uc: uc,
 		v:  v,
 	}
+}
+
+func (handler *wasteDepoHandler) SoftDeleteByID(c fiber.Ctx) error {
+	id := c.Params("id")
+
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	payload := model.WasteDepoDeleteByIDRequest{
+		ID:        id,
+		DeletedBy: types.DummyAdminID, // set to actual id
+	}
+
+	resp := handler.uc.SoftDeleteByID(ctx, payload)
+
+	return c.Status(resp.StatusCode).JSON(resp)
 }
 
 func (handler *wasteDepoHandler) DeleteByID(c fiber.Ctx) error {

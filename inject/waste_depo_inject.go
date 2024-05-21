@@ -17,6 +17,7 @@ func WasteDepoInject(inject Inject) {
 
 	router.Get("/:id", handler.FindByID)
 	router.Delete("/:id", handler.DeleteByID)
+	router.Delete("/:id/soft", handler.SoftDeleteByID)
 	router.Post("/", handler.Deposit)
 	router.Put("/:id/confirm", handler.ConfirmDeposit)
 }

@@ -35,6 +35,38 @@ func NewWasteDepoUsecase(
 	}
 }
 
+func (uc *wasteDepoUsecase) SoftDeleteByID(ctx context.Context, payload model.WasteDepoDeleteByIDRequest) (resp util.Response) {
+	ticket := uuid.New()
+	handler, err := util.CheckIDWithResponse(payload.ID)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	err = uc.repo.SoftDeleteByID(ctx, payload)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+			return response
+		}
+
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedSoftDelete))
+
+		if err == pgx.ErrNoRows {
+			return util.NoRowsErrorResponse(ticket)
+		}
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Deposit.SuccessSoftDelete,
+	}
+}
+
 func (uc *wasteDepoUsecase) DeleteByID(ctx context.Context, id string) (resp util.Response) {
 	ticket := uuid.New()
 	handler, err := util.CheckIDWithResponse(id)
@@ -51,11 +83,11 @@ func (uc *wasteDepoUsecase) DeleteByID(ctx context.Context, id string) (resp uti
 			return response
 		}
 
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedDelete))
+
 		if err == pgx.ErrNoRows {
 			return util.NoRowsErrorResponse(ticket)
 		}
-
-		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedDelete))
 
 		return util.InternalErrorResponse(ticket)
 	}

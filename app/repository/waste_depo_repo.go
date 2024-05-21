@@ -21,6 +21,19 @@ func NewWasteDepoRepository(pgxConfig *config.PgxConfig) domain.WasteDepoReposit
 	}
 }
 
+func (respo *wasteDepoRepository) SoftDeleteByID(ctx context.Context, payload model.WasteDepoDeleteByIDRequest) error {
+	queries := respo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		UPDATE waste_deposits SET deleted_by = $1 WHERE id = $2
+	`
+	result, err := queries.Exec(ctx, sql, payload.DeletedBy, payload.ID)
+	if result.RowsAffected() == 0 {
+		return pgx.ErrNoRows
+	}
+
+	return err
+}
+
 func (repo *wasteDepoRepository) DeleteByID(ctx context.Context, id string) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
@@ -52,6 +65,7 @@ func (repo *wasteDepoRepository) FindByID(ctx context.Context, id string) (wd *m
 		&depo.UpdatedAt,
 		&depo.DeletedAt,
 		&depo.CreatedBy,
+		&depo.DeletedBy,
 	)
 	if err != nil {
 		return nil, err
@@ -95,6 +109,7 @@ func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload mod
 		&depo.UpdatedAt,
 		&depo.DeletedAt,
 		&depo.CreatedBy,
+		&depo.DeletedBy,
 	)
 	if err != nil {
 		return nil, err

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
@@ -66,6 +67,7 @@ func (repo *wasteDepoRepository) ConfirmDeposit(ctx context.Context, payload mod
 		},
 	})
 	rawSql = rawSql + " " + "RETURNING *"
+	fmt.Println(rawSql)
 
 	var depo model.WasteDepo
 	err := queries.QueryRow(ctx, rawSql, args...).Scan(

@@ -46,6 +46,10 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 		return *handler
 	}
 
+	// wasteTypeID := payload.WasteTypeID
+	qty := payload.Quantity
+	wtID := payload.WasteTypeID
+
 	var balance *float64
 	var wd *model.WasteDepo
 	err = uc.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
@@ -53,14 +57,21 @@ func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.Wa
 		if err != nil {
 			return err
 		}
+		if qty == 0.0 {
+			qty = wd.Quantity
+		}
+		if wtID == "" {
+			wtID = wd.WasteTypeID
+		}
 
 		// Find waste category
-		wt, err := uc.wasteTypeRepo.FindByID(ctx, payload.WasteTypeID)
+		wt, err := uc.wasteTypeRepo.FindByID(ctx, wtID)
 		if err != nil {
 			return err
 		}
 
-		point := wt.Point * payload.Quantity
+		// Calculate point
+		point := wt.Point * qty
 
 		// Set wallet balance increasing
 		var walletBalancePayload model.WalletSetBalanceRequest = model.WalletSetBalanceRequest{

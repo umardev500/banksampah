@@ -36,7 +36,7 @@ type WasteDepoCreateRequest struct {
 
 type WasteDepoConfirmRequest struct {
 	ID          string          `json:"-" checkid:"id"`
-	WasteTypeID string          `json:"waste_type_id" validate:"required" checkid:"waste_type_id" db:"waste_type_id"`
-	Quantity    float64         `json:"quantity" validate:"required" db:"quantity"`
+	WasteTypeID string          `json:"waste_type_id" db:"waste_type_id"` // optional
+	Quantity    float64         `json:"quantity" db:"quantity"`           // optional
 	Status      WasteDepoStatus `json:"-" db:"status"`
 }

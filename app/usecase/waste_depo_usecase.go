@@ -35,6 +35,38 @@ func NewWasteDepoUsecase(
 	}
 }
 
+func (uc *wasteDepoUsecase) FindByID(ctx context.Context, id string) (resp util.Response) {
+	ticket := uuid.New()
+	handler, err := util.CheckIDWithResponse(id)
+	if err != nil {
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+		handler.Ticket = ticket
+		return *handler
+	}
+
+	wd, err := uc.repo.FindByID(ctx, id)
+	if err != nil {
+		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
+			log.Error().Msgf(util.LogParseError(&ticket, err, types.FailedParseIDMessage))
+			return response
+		}
+		log.Error().Msgf(util.LogParseError(&ticket, err, types.Deposit.FailedGetOne))
+
+		if err == pgx.ErrNoRows {
+			return util.NoRowsErrorResponse(ticket)
+		}
+
+		return util.InternalErrorResponse(ticket)
+	}
+
+	return util.Response{
+		Ticket:     ticket,
+		StatusCode: fiber.StatusOK,
+		Message:    types.Deposit.SuccessGetOne,
+		Data:       wd,
+	}
+}
+
 func (uc *wasteDepoUsecase) ConfirmDeposit(ctx context.Context, payload model.WasteDepoConfirmRequest) (resp util.Response) {
 	ticket := uuid.New()
 	payload.Status = model.WasteDepoStatusConfirmed

@@ -14,6 +14,8 @@ func WasteDepoInject(inject Inject) {
 	handler := handler.NewWasteDepoHandler(uc, inject.V)
 
 	router := inject.Router.Group("/deposits")
+
+	router.Get("/:id", handler.FindByID)
 	router.Post("/", handler.Deposit)
 	router.Put("/:id/confirm", handler.ConfirmDeposit)
 }

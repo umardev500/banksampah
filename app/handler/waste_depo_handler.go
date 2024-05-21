@@ -23,6 +23,17 @@ func NewWasteDepoHandler(uc domain.WasteDepoUsecase, v *validator.Validate) doma
 	}
 }
 
+func (handler *wasteDepoHandler) FindByID(c fiber.Ctx) error {
+	id := c.Params("id")
+
+	ctx, cancel := context.WithTimeout(c.Context(), 10*time.Second)
+	defer cancel()
+
+	resp := handler.uc.FindByID(ctx, id)
+
+	return c.Status(resp.StatusCode).JSON(resp)
+}
+
 func (handler *wasteDepoHandler) ConfirmDeposit(c fiber.Ctx) error {
 	id := c.Params("id")
 

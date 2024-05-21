@@ -11,11 +11,13 @@ import (
 type WasteDepoHandler interface {
 	Deposit(c fiber.Ctx) error
 	ConfirmDeposit(c fiber.Ctx) error
+	FindByID(c fiber.Ctx) error
 }
 
 type WasteDepoUsecase interface {
 	Deposit(ctx context.Context, payload model.WasteDepoCreateRequest) util.Response
 	ConfirmDeposit(ctx context.Context, payload model.WasteDepoConfirmRequest) util.Response
+	FindByID(ctx context.Context, id string) util.Response
 }
 
 type WasteDepoRepository interface {

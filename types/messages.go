@@ -67,6 +67,8 @@ var Deposit = struct {
 	// find
 	FailedGetAll  string
 	SuccessGetAll string
+	FailedGetOne  string
+	SuccessGetOne string
 	// Delete
 	FailedDelete  string
 	SuccessDelete string
@@ -79,6 +81,8 @@ var Deposit = struct {
 }{
 	FailedGetAll:  fmt.Sprintf("Failed to get all %s", depo),
 	SuccessGetAll: fmt.Sprintf("Successfully get all %s", depo),
+	FailedGetOne:  fmt.Sprintf("Failed to get %s by id", depo),
+	SuccessGetOne: fmt.Sprintf("Successfully get %s by id", depo),
 	FailedDelete:  fmt.Sprintf("Failed to delete %s", depo),
 	SuccessDelete: fmt.Sprintf("Successfully delete %s", depo),
 	SuccessUpdate: fmt.Sprintf("Successfully update %s", depo),

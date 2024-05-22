@@ -37,9 +37,9 @@ func (respo *wasteDepoRepository) SoftDeleteByID(ctx context.Context, payload mo
 func (repo *wasteDepoRepository) DeleteByID(ctx context.Context, id string) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		DELETE FROM waste_deposits WHERE id=$1
+		DELETE FROM waste_deposits WHERE id=$1 AND status = $2
 	`
-	result, err := queries.Exec(ctx, sql, id)
+	result, err := queries.Exec(ctx, sql, id, model.WasteDepoStatusUnConfirmed)
 	if result.RowsAffected() == 0 {
 		return pgx.ErrNoRows
 	}

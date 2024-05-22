@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS waste_types (
 
 CREATE TABLE IF NOT EXISTS wt_versions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_id UUID,
     "name" VARCHAR(25) NOT NULL,
     "point" DECIMAL(7, 2) NOT NULL,
     "description" TEXT,

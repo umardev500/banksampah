@@ -3,48 +3,24 @@
         "id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
         "name": "Botol PET",
         "point": 1500,
-        "description": "Botol PET bekas minuman"
+        "description": "Botol PET bekas minuman",
+        "created_by": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "version_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c1"
     },
     {
         "id": "6ba7b811-9dad-11d1-80b4-00c04fd430c2",
         "name": "Koran Bekas",
         "point": 800,
-        "description": "Koran bekas untuk daur ulang kertas"
+        "description": "Koran bekas untuk daur ulang kertas",
+        "created_by": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "version_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c2"
     },
     {
         "id": "6ba7b812-9dad-11d1-80b4-00c04fd430c3",
         "name": "Botol Kaca",
         "point": 2000,
-        "description": "Botol kaca bekas minuman"
-    },
-    {
-        "id": "6ba7b813-9dad-11d1-80b4-00c04fd430c4",
-        "name": "Kaleng Bekas",
-        "point": 2500,
-        "description": "Kaleng bekas makanan atau minuman"
-    },
-    {
-        "id": "6ba7b814-9dad-11d1-80b4-00c04fd430c5",
-        "name": "Sisa Makanan",
-        "point": 500,
-        "description": "Sisa makanan organik"
-    },
-    {
-        "id": "6ba7b815-9dad-11d1-80b4-00c04fd430c6",
-        "name": "Besi Bekas",
-        "point": 3000,
-        "description": "Besi bekas dari barang rumah tangga atau konstruksi"
-    },
-    {
-        "id": "6ba7b816-9dad-11d1-80b4-00c04fd430c7",
-        "name": "Aluminium Bekas",
-        "point": 3500,
-        "description": "Aluminium bekas dari kaleng atau barang elektronik"
-    },
-    {
-        "id": "6ba7b817-9dad-11d1-80b4-00c04fd430c8",
-        "name": "Kertas Karton",
-        "point": 1000,
-        "description": "Kertas karton bekas untuk kemasan atau pengiriman"
+        "description": "Botol kaca bekas minuman",
+        "created_by": "6ba7b810-9dad-11d1-80b4-00c04fd430c1",
+        "version_id": "6ba7b810-9dad-11d1-80b4-00c04fd430c3"
     }
 ]

@@ -23,11 +23,13 @@ func NewWasteTypeUsecase(repo domain.WasteTypeRepository) domain.WasteTypeUsecas
 	}
 }
 
-func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
+func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreateWithVersion) util.Response {
 	ticket := uuid.New()
-	payload.ID = uuid.New().String()
+	payload.SOURCEID = uuid.New().String()
+	payload.VERSIONID = uuid.New().String()
+	payload.CreatedBy = types.DummyAdminID
 
-	result, err := uc.repo.Create(ctx, payload)
+	result, err := uc.repo.CreateWithVersion(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))

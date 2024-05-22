@@ -22,7 +22,7 @@ func NewWasteTypeHandler(uc domain.WasteTypeUsecase, v *validator.Validate) doma
 }
 
 func (w *wasteTypeHandler) Create(c fiber.Ctx) error {
-	var payload model.WasteTypeCreateOrUpdateRequest
+	var payload model.WasteTypeCreateWithVersion
 
 	if err := c.Bind().Body(&payload); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)

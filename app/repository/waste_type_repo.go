@@ -42,25 +42,76 @@ func (repo *wasteTypeRepo) FindByID(ctx context.Context, id string) (wt *model.W
 	return
 }
 
-func (repo *wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) (*model.WasteType, error) {
+func (repo *wasteTypeRepo) CreateWithVersion(ctx context.Context, payload model.WasteTypeCreateWithVersion) (*model.WasteType, error) {
+	var err error
+	var wt *model.WasteType
+	err = repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		err = repo.createVersion(ctx, payload)
+		if err != nil {
+			return err
+		}
+		wt, err = repo.Create(ctx, payload)
+
+		return err
+	})
+
+	return wt, nil
+}
+
+func (repo *wasteTypeRepo) createVersion(ctx context.Context, payload model.WasteTypeCreateWithVersion) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		INSERT INTO waste_types (id, "name", "point", "description") VALUES ($1, $2, $3, $4)
+		INSERT INTO wt_versions (id, wt_id, "name", "point", "description", created_by)
+		VALUES ($1, $2, $3, $4, $5, $6)
+	`
+
+	_, err := queries.Exec(
+		ctx,
+		sql,
+		payload.VERSIONID,
+		payload.SOURCEID,
+		payload.Name,
+		payload.Point,
+		payload.Description,
+		payload.CreatedBy,
+	)
+	return err
+}
+
+func (repo *wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCreateWithVersion) (*model.WasteType, error) {
+	var result model.WasteType
+
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		INSERT INTO waste_types (id, "name", "point", "description", "version_id", created_by)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING *
 	`
 
 	// _, err := queries.Exec(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
-	row := queries.QueryRow(ctx, sql, payload.ID, payload.Name, payload.Point, payload.Description)
+	row := queries.QueryRow(
+		ctx,
+		sql,
+		payload.SOURCEID,
+		payload.Name,
+		payload.Point,
+		payload.Description,
+		payload.VERSIONID,
+		payload.CreatedBy,
+	)
 
-	var result model.WasteType
 	err := row.Scan(
 		&result.ID,
 		&result.Name,
 		&result.Point,
 		&result.Description,
+		&result.VersionID,
 		&result.CreatedAt,
 		&result.UpdatedAt,
 		&result.DeletedAt,
+		&result.DeletedBy,
+		&result.UpdatedBy,
+		&result.CreatedBy,
 	)
 	if err != nil {
 		return nil, err

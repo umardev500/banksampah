@@ -11,9 +11,13 @@ type WasteType struct {
 	Name        string     `json:"name"`
 	Point       float64    `json:"point"`
 	Description string     `json:"description"`
+	VersionID   uuid.UUID  `json:"version_id"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 	DeletedAt   *time.Time `json:"deleted_at,omitempty"`
+	CreatedBy   *string    `json:"created_by,omitempty"`
+	UpdatedBy   *string    `json:"updated_by,omitempty"`
+	DeletedBy   *string    `json:"deleted_by,omitempty"`
 }
 
 type FindWasteTypeResponse struct {

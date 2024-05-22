@@ -1,1 +1,2 @@
 DROP TABLE IF EXISTS waste_types;
+DROP TABLE IF EXISTS wt_versions;

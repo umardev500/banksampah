@@ -121,7 +121,35 @@ func (repo *wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCr
 	return &result, err
 }
 
-func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error {
+func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
+	var err error
+	err = repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		err = repo.createVersion(ctx, model.WasteTypeCreateWithVersion{
+			SOURCEID:    payload.SOURCEID,
+			VERSIONID:   payload.VERSIONID,
+			Name:        payload.Name,
+			Point:       payload.Point,
+			Description: payload.Description,
+			CreatedBy:   payload.UpdatedBy,
+		})
+		if err != nil {
+			return err
+		}
+		err = repo.UpdateByID(ctx, model.WasteTypeUpdateWithVersionRequest{
+			VERSIONID:   payload.VERSIONID,
+			Name:        payload.Name,
+			Point:       payload.Point,
+			Description: payload.Description,
+			UpdatedBy:   payload.UpdatedBy,
+		})
+
+		return nil
+	})
+
+	return err
+}
+
+func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		UPDATE waste_types SET
@@ -130,7 +158,7 @@ func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTy
 		{
 			Field:    "id",
 			Operator: "=",
-			Value:    payload.ID,
+			Value:    payload.SOURCEID,
 		},
 	})
 	if args == nil {

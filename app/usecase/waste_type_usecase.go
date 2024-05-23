@@ -50,9 +50,9 @@ func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreate
 	}
 }
 
-func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) util.Response {
+func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) util.Response {
 	ticket := uuid.New()
-	handler, err := util.CheckIDWithResponse(payload.ID)
+	handler, err := util.ChekEntireIDFromStructWithResponse(payload)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
 		handler.Ticket = ticket

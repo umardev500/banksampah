@@ -20,7 +20,7 @@ type WasteTypeUsecase interface {
 	Create(ctx context.Context, payload model.WasteTypeCreateWithVersion) util.Response
 	Find(ctx context.Context, params *types.QueryParam) util.Response
 	DeleteByID(ctx context.Context, id string) util.Response
-	UpdateByID(ctx context.Context, pyload model.WasteTypeCreateOrUpdateRequest) util.Response
+	UpdateByID(ctx context.Context, pyload model.WasteTypeUpdateWithVersionRequest) util.Response
 }
 
 type WasteTypeRepository interface {
@@ -30,5 +30,5 @@ type WasteTypeRepository interface {
 	FindByID(ctx context.Context, id string) (*model.WasteType, error)
 	DeleteByID(ctx context.Context, id string) error
 	SoftDeleteByID(ctx context.Context, deletedBy, id string) error
-	UpdateByID(ctx context.Context, payload model.WasteTypeCreateOrUpdateRequest) error
+	UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error
 }

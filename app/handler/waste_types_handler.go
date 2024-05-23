@@ -34,13 +34,13 @@ func (w *wasteTypeHandler) Create(c fiber.Ctx) error {
 
 func (w *wasteTypeHandler) UpdateByID(c fiber.Ctx) error {
 	id := c.Params("id")
-	var payload model.WasteTypeCreateOrUpdateRequest
+	var payload model.WasteTypeUpdateWithVersionRequest
 
 	if err := c.Bind().Body(&payload); err != nil {
 		return c.SendStatus(fiber.StatusUnprocessableEntity)
 	}
 
-	payload.ID = id
+	payload.SOURCEID = id
 	resp := w.uc.UpdateByID(c.Context(), payload)
 	return c.Status(resp.StatusCode).JSON(resp)
 }

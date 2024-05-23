@@ -7,7 +7,7 @@ const (
 	ErrCodeNameValidation   ErrCodeName = "VALIDATION"
 	ErrCodeNameInvalidID    ErrCodeName = "INVALID_ID"
 	ErrCodeNameInvalidIDs   ErrCodeName = "INVALID_IDS"
-	ErrCodeNameConstraint   ErrCodeName = "CONSTRAINT_NOT_EXIST"
+	ErrCodeNameConstraint   ErrCodeName = "CONSTRAINT"
 	ErrCodeNameOutOfBalance ErrCodeName = "OUT_OF_BALANCE"
 	ErrCodeNameEmpy         ErrCodeName = "EMPTY"
 )

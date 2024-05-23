@@ -1,34 +1,38 @@
 package util
 
 import (
-	"fmt"
 	"regexp"
+	"strings"
 )
 
 // RegexKeyValue is regex to parse key value error
 // will return string which is contain about column and value
-func RegexKeyValue(src, pattern string) (msg string, matches []string) {
+func RegexKeyValue(src, pattern string) (matches []string) {
 	re := regexp.MustCompile(pattern)
 	matches = re.FindStringSubmatch(src)
 
 	if len(matches) > 2 {
-		field := matches[1]
-		value := matches[2]
-		detailedMessage := fmt.Sprintf("The %s '%s'", field, value)
-		return detailedMessage, matches
+		return matches
 	}
 
-	return "No details.", nil
+	return nil
+}
+
+func removeExtraMessage(src, prefix string) (result string) {
+	ptrn := `from table ".*?".`
+	re := regexp.MustCompile(ptrn)
+	result = re.ReplaceAllString(src, "")
+	result = strings.TrimSpace(strings.TrimPrefix(result, prefix))
+	matched := re.MatchString(src)
+	if matched {
+		result += "."
+	}
+	return
 }
 
 func RegexKeyValueExist(src, pattern string, exist bool) (msg string, matches []string) {
-	add := "already exists."
-	if !exist {
-		add = "is not exists."
-	}
-
-	msg, matches = RegexKeyValue(src, pattern)
-	msg = msg + " " + add
+	matches = RegexKeyValue(src, pattern)
+	msg = removeExtraMessage(src, matches[0])
 
 	return
 }

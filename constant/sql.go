@@ -10,6 +10,5 @@ const (
 type SqlErrPattern string
 
 const (
-	SqlErrPatternDuplicate  SqlErrPattern = `Key \(([^)]+)\)=\(([^)]+)\) already exists\.`
-	SqlErrConstraintPattern SqlErrPattern = `Key \(([^)]+)\)=\(([^)]+)\) is not present in table`
+	SqlKeyValuePattern SqlErrPattern = `Key \(([^)]+)\)=\(([^)]+)\)`
 )

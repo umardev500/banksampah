@@ -147,6 +147,9 @@ func (repo *wasteTypeRepo) DeleteByID(ctx context.Context, id string) error {
 		DELETE FROM waste_types WHERE id=$1
 	`
 	result, err := queries.Exec(ctx, sql, id)
+	if err != nil {
+		return err
+	}
 	if result.RowsAffected() == 0 {
 		return pgx.ErrNoRows
 	}

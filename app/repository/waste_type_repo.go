@@ -157,12 +157,23 @@ func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload mo
 }
 
 func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
+	fmt.Println(payload.SOURCEID)
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		UPDATE waste_types SET "name" = 'bar'
+		UPDATE waste_types SET
 	`
+	rawQuery, args := util.BuildUpdateQuery(sql, payload, []types.Filter{
+		{
+			Field:    "id",
+			Operator: "=",
+			Value:    payload.SOURCEID,
+		},
+	})
+	if args == nil {
+		return nil
+	}
 
-	_, err := queries.Exec(ctx, sql)
+	_, err := queries.Exec(ctx, rawQuery, args...)
 
 	return err
 }

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/umardev500/banksampah/config"
@@ -134,7 +133,6 @@ func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload mo
 			UpdatedBy:   payload.UpdatedBy,
 		})
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 

@@ -157,7 +157,6 @@ func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload mo
 }
 
 func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
-	fmt.Println(payload.SOURCEID)
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
 		UPDATE waste_types SET

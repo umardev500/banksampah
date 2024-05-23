@@ -174,9 +174,13 @@ func (repo *wasteTypeRepo) Find(ctx context.Context, params *types.QueryParam) (
 			&wasteType.Name,
 			&wasteType.Point,
 			&wasteType.Description,
+			&wasteType.VersionID,
 			&wasteType.CreatedAt,
 			&wasteType.UpdatedAt,
 			&wasteType.DeletedAt,
+			&wasteType.DeletedBy,
+			&wasteType.UpdatedBy,
+			&wasteType.CreatedBy,
 			&total,
 		)
 		if err != nil {

@@ -27,11 +27,11 @@ type FindWasteTypeResponse struct {
 
 type WasteTypeUpdateWithVersionRequest struct {
 	SOURCEID    string  `json:"-"`
-	VERSIONID   string  `json:"-"`
+	VERSIONID   string  `json:"-" checkid:"version_id"`
 	Name        string  `json:"name" db:"name"`
 	Point       float64 `json:"point" db:"point"`
 	Description string  `json:"description" db:"description"`
-	UpdatedBy   string  `json:"created_by" db:"created_by"`
+	UpdatedBy   string  `json:"-" db:"updated_by"`
 }
 
 type WasteTypeCreateWithVersion struct {

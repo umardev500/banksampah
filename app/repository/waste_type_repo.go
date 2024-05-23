@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/umardev500/banksampah/config"
@@ -124,6 +125,19 @@ func (repo *wasteTypeRepo) Create(ctx context.Context, payload model.WasteTypeCr
 func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
 	var err error
 	err = repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
+		err = repo.UpdateByID(ctx, model.WasteTypeUpdateWithVersionRequest{
+			SOURCEID:    payload.SOURCEID,
+			VERSIONID:   payload.VERSIONID,
+			Name:        payload.Name,
+			Point:       payload.Point,
+			Description: payload.Description,
+			UpdatedBy:   payload.UpdatedBy,
+		})
+		if err != nil {
+			fmt.Println(err)
+			return err
+		}
+
 		err = repo.createVersion(ctx, model.WasteTypeCreateWithVersion{
 			SOURCEID:    payload.SOURCEID,
 			VERSIONID:   payload.VERSIONID,
@@ -135,15 +149,8 @@ func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload mo
 		if err != nil {
 			return err
 		}
-		err = repo.UpdateByID(ctx, model.WasteTypeUpdateWithVersionRequest{
-			VERSIONID:   payload.VERSIONID,
-			Name:        payload.Name,
-			Point:       payload.Point,
-			Description: payload.Description,
-			UpdatedBy:   payload.UpdatedBy,
-		})
 
-		return nil
+		return err
 	})
 
 	return err
@@ -152,20 +159,11 @@ func (repo *wasteTypeRepo) UpdateByIDWithVersion(ctx context.Context, payload mo
 func (repo *wasteTypeRepo) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error {
 	queries := repo.pgxConfig.TrOrDB(ctx)
 	sql := `--sql
-		UPDATE waste_types SET
+		UPDATE waste_types SET "name" = 'bar'
 	`
-	rawQuery, args := util.BuildUpdateQuery(sql, payload, []types.Filter{
-		{
-			Field:    "id",
-			Operator: "=",
-			Value:    payload.SOURCEID,
-		},
-	})
-	if args == nil {
-		return nil
-	}
 
-	_, err := queries.Exec(ctx, rawQuery, args...)
+	_, err := queries.Exec(ctx, sql)
+
 	return err
 }
 

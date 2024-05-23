@@ -52,6 +52,9 @@ func (uc *wasteTypeUc) Create(ctx context.Context, payload model.WasteTypeCreate
 
 func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) util.Response {
 	ticket := uuid.New()
+	payload.UpdatedBy = types.DummyAdminID // TODO: change this
+	payload.VERSIONID = uuid.New().String()
+
 	handler, err := util.ChekEntireIDFromStructWithResponse(payload)
 	if err != nil {
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))
@@ -59,7 +62,7 @@ func (uc *wasteTypeUc) UpdateByID(ctx context.Context, payload model.WasteTypeUp
 		return *handler
 	}
 
-	err = uc.repo.UpdateByID(ctx, payload)
+	err = uc.repo.UpdateByIDWithVersion(ctx, payload)
 	if err != nil {
 		if response, isPgErr := util.GetPgError(err); isPgErr != nil {
 			log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FaildUpdate))

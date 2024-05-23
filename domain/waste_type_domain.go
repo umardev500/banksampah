@@ -31,4 +31,5 @@ type WasteTypeRepository interface {
 	DeleteByID(ctx context.Context, id string) error
 	SoftDeleteByID(ctx context.Context, deletedBy, id string) error
 	UpdateByID(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error
+	UpdateByIDWithVersion(ctx context.Context, payload model.WasteTypeUpdateWithVersionRequest) error
 }

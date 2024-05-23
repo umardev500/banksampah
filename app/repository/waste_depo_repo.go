@@ -27,6 +27,9 @@ func (respo *wasteDepoRepository) SoftDeleteByID(ctx context.Context, payload mo
 		UPDATE waste_deposits SET deleted_by = $1 WHERE id = $2 AND status = $3
 	`
 	result, err := queries.Exec(ctx, sql, payload.DeletedBy, payload.ID, model.WasteDepoStatusUnConfirmed)
+	if err != nil {
+		return err
+	}
 	if result.RowsAffected() == 0 {
 		return pgx.ErrNoRows
 	}
@@ -40,6 +43,9 @@ func (repo *wasteDepoRepository) DeleteByID(ctx context.Context, id string) erro
 		DELETE FROM waste_deposits WHERE id=$1 AND status = $2
 	`
 	result, err := queries.Exec(ctx, sql, id, model.WasteDepoStatusUnConfirmed)
+	if err != nil {
+		return err
+	}
 	if result.RowsAffected() == 0 {
 		return pgx.ErrNoRows
 	}

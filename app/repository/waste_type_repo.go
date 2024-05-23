@@ -163,6 +163,9 @@ func (repo *wasteTypeRepo) SoftDeleteByID(ctx context.Context, deletedBy, id str
 		UPDATE waste_types SET deleted_at = now(), deleted_by = $1 WHERE id = $2
 	`
 	result, err := queries.Exec(ctx, sql, deletedBy, id)
+	if err != nil {
+		return err
+	}
 	if result.RowsAffected() == 0 {
 		return pgx.ErrNoRows
 	}

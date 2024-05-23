@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/rs/zerolog/log"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
@@ -94,6 +95,10 @@ func (uc *wasteTypeUc) DeleteByID(ctx context.Context, id string) util.Response 
 		}
 
 		log.Error().Msgf(util.LogParseError(&ticket, err, types.Waste.FailedDelete))
+
+		if err == pgx.ErrNoRows {
+			return util.NoRowsErrorResponse(ticket)
+		}
 
 		return util.Response{
 			Ticket:     ticket,

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/umardev500/banksampah/config"
 	"github.com/umardev500/banksampah/domain"
 	"github.com/umardev500/banksampah/domain/model"
@@ -145,7 +146,24 @@ func (repo *wasteTypeRepo) DeleteByID(ctx context.Context, id string) error {
 	sql := `--sql
 		DELETE FROM waste_types WHERE id=$1
 	`
-	_, err := queries.Exec(ctx, sql, id)
+	result, err := queries.Exec(ctx, sql, id)
+	if result.RowsAffected() == 0 {
+		return pgx.ErrNoRows
+	}
+
+	return err
+}
+
+func (repo *wasteTypeRepo) SoftDeleteByID(ctx context.Context, deletedBy, id string) error {
+	queries := repo.pgxConfig.TrOrDB(ctx)
+	sql := `--sql
+		UPDATE waste_types SET deleted_at = now(), deleted_by = $1 WHERE id = $2
+	`
+	result, err := queries.Exec(ctx, sql, deletedBy, id)
+	if result.RowsAffected() == 0 {
+		return pgx.ErrNoRows
+	}
+
 	return err
 }
 

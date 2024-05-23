@@ -47,11 +47,11 @@ func (repo *wasteTypeRepo) CreateWithVersion(ctx context.Context, payload model.
 	var err error
 	var wt *model.WasteType
 	err = repo.pgxConfig.WithTransaction(ctx, func(ctx context.Context) error {
-		err = repo.createVersion(ctx, payload)
+		wt, err = repo.Create(ctx, payload)
 		if err != nil {
 			return err
 		}
-		wt, err = repo.Create(ctx, payload)
+		err = repo.createVersion(ctx, payload)
 
 		return err
 	})
